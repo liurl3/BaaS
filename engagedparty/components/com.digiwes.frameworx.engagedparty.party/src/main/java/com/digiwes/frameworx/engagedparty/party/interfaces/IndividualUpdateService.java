@@ -8,7 +8,7 @@ public interface IndividualUpdateService{
 	
 	public Individual hasLanguageAbility(Individual individual, LanguageAbility languageAbility) ;
 	
-	public Individual modifyLanguageAbility(Individual individual, LanguageAbility fromLanguageAbility, LanguageAbility toLanguageAbility);
+	public Individual modifyLanguageAbility(Individual individual, LanguageAbility fromLanguageAbility, LanguageAbility toLanguageAbility) throws Exception;
 	
 	public Individual modifyDefaultName(Individual individual,  IndividualName name);
 	 
