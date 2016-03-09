@@ -10,6 +10,9 @@
     <groupId>com.digiwes.frameworx</groupId>
     <artifactId>com.digiwes.frameworx.engagedparty-components</artifactId>
     <version>0.1.0-SNAPSHOT</version>
+    <modules>
+        <module>com.digiwes.frameworx.engagedparty.party</module>
+    </modules>
 
     <packaging>pom</packaging>
     <name>com.digiwes.frameworx.engagedparty-components</name>
