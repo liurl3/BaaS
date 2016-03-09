@@ -51,4 +51,99 @@ public class Individual  {
 	 */
 	private TimePeriod aliveDuring;
 
+	public String getIndividualId() {
+		return individualId;
+	}
+
+	public void setIndividualId(String individualId) {
+		this.individualId = individualId;
+	}
+
+	public TimePeriod getValidFor() {
+		return validFor;
+	}
+
+	public void setValidFor(TimePeriod validFor) {
+		this.validFor = validFor;
+	}
+
+	public Set<LanguageAbility> get_languageAbilitys() {
+		return _languageAbilitys;
+	}
+
+	public void set_languageAbilitys(Set<LanguageAbility> _languageAbilitys) {
+		this._languageAbilitys = _languageAbilitys;
+	}
+
+	public DefaultIndividualName get_defaultIndividualName() {
+		return _defaultIndividualName;
+	}
+
+	public void set_defaultIndividualName(DefaultIndividualName _defaultIndividualName) {
+		this._defaultIndividualName = _defaultIndividualName;
+	}
+
+	public Set<OptionalIndividualName> get_optionalIndividualName() {
+		return _optionalIndividualName;
+	}
+
+	public void set_optionalIndividualName(Set<OptionalIndividualName> _optionalIndividualName) {
+		this._optionalIndividualName = _optionalIndividualName;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getDisabilities() {
+		return disabilities;
+	}
+
+	public void setDisabilities(String disabilities) {
+		this.disabilities = disabilities;
+	}
+
+	public String getPlaceOfBirth() {
+		return placeOfBirth;
+	}
+
+	public void setPlaceOfBirth(String placeOfBirth) {
+		this.placeOfBirth = placeOfBirth;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+	public String getMaritalStatus() {
+		return maritalStatus;
+	}
+
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
+
+	public String getSkills() {
+		return skills;
+	}
+
+	public void setSkills(String skills) {
+		this.skills = skills;
+	}
+
+	public TimePeriod getAliveDuring() {
+		return aliveDuring;
+	}
+
+	public void setAliveDuring(TimePeriod aliveDuring) {
+		this.aliveDuring = aliveDuring;
+	}
 }

@@ -2,8 +2,6 @@ package com.digiwes.frameworx.engagedparty.party.bean;
 
 import com.digiwes.frameworx.common.basetype.TimePeriod;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * A word, term, or phrase by which an individual is known and distinguished from other individuals.A name is an informal way of identifying an object [Fowler]This entity allows for international naming variations. An IndividualName is a type of PartyName.
  */
@@ -47,7 +45,7 @@ public class IndividualName   {
 	 * Also known as Christian name, chosen name, first name 
 	 * Multiple fields may be entered with a delimiter in-between or stored in a collection
 	 */
-	@NotNull
+	
 	private String givenNames;
 	/**
 	 * Contains the chosen name by which the person prefers to be addressed. Note: This name may be a name other than a given name, such as a nickname
@@ -71,7 +69,6 @@ public class IndividualName   {
 	 * Also known as surname 
 	 * Multiple fields may be entered with a delimiter in-between
 	 */
-	@NotNull
 	private String familyNames;
 	/**
 	 * An abbreviation or word that pertains to the generation in a family, such Sr, Jr.
@@ -85,6 +82,115 @@ public class IndividualName   {
 	 */
 	private String qualifications;
 
+	public String getPartyNameId() {
+		return partyNameId;
+	}
 
+	public void setPartyNameId(String partyNameId) {
+		this.partyNameId = partyNameId;
+	}
 
+	public TimePeriod getValidFor() {
+		return validFor;
+	}
+
+	public void setValidFor(TimePeriod validFor) {
+		this.validFor = validFor;
+	}
+
+	public String getFormattedName() {
+		return formattedName;
+	}
+
+	public void setFormattedName(String formattedName) {
+		this.formattedName = formattedName;
+	}
+
+	public String getLegalName() {
+		return legalName;
+	}
+
+	public void setLegalName(String legalName) {
+		this.legalName = legalName;
+	}
+
+	public String getAristocraticTitle() {
+		return aristocraticTitle;
+	}
+
+	public void setAristocraticTitle(String aristocraticTitle) {
+		this.aristocraticTitle = aristocraticTitle;
+	}
+
+	public String getFormOfAddress() {
+		return formOfAddress;
+	}
+
+	public void setFormOfAddress(String formOfAddress) {
+		this.formOfAddress = formOfAddress;
+	}
+
+	public String getGeneration() {
+		return generation;
+	}
+
+	public void setGeneration(String generation) {
+		this.generation = generation;
+	}
+
+	public String getGivenNames() {
+		return givenNames;
+	}
+
+	public void setGivenNames(String givenNames) {
+		this.givenNames = givenNames;
+	}
+
+	public String getPreferredGivenName() {
+		return preferredGivenName;
+	}
+
+	public void setPreferredGivenName(String preferredGivenName) {
+		this.preferredGivenName = preferredGivenName;
+	}
+
+	public String getMiddleNames() {
+		return middleNames;
+	}
+
+	public void setMiddleNames(String middleNames) {
+		this.middleNames = middleNames;
+	}
+
+	public String getFamilyNamePrefix() {
+		return familyNamePrefix;
+	}
+
+	public void setFamilyNamePrefix(String familyNamePrefix) {
+		this.familyNamePrefix = familyNamePrefix;
+	}
+
+	public String getFamilyNames() {
+		return familyNames;
+	}
+
+	public void setFamilyNames(String familyNames) {
+		this.familyNames = familyNames;
+	}
+
+	public String getFamilyGeneration() {
+		return familyGeneration;
+	}
+
+	public void setFamilyGeneration(String familyGeneration) {
+		this.familyGeneration = familyGeneration;
+	}
+
+	public String getQualifications() {
+		return qualifications;
+	}
+
+	public void setQualifications(String qualifications) {
+		this.qualifications = qualifications;
+	}
 }

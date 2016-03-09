@@ -28,4 +28,60 @@ public class LanguageAbility {
 	 * Degree of mastery in listening to a language.
 	 */
 	private String listeningProficiency;
+
+	public String getLanguageAbilityId() {
+		return languageAbilityId;
+	}
+
+	public void setLanguageAbilityId(String languageAbilityId) {
+		this.languageAbilityId = languageAbilityId;
+	}
+
+	public Individual get_individual() {
+		return _individual;
+	}
+
+	public void set_individual(Individual _individual) {
+		this._individual = _individual;
+	}
+
+	public Language get_language() {
+		return _language;
+	}
+
+	public void set_language(Language _language) {
+		this._language = _language;
+	}
+
+	public String getWritingProficiency() {
+		return writingProficiency;
+	}
+
+	public void setWritingProficiency(String writingProficiency) {
+		this.writingProficiency = writingProficiency;
+	}
+
+	public String getReadingProficiency() {
+		return readingProficiency;
+	}
+
+	public void setReadingProficiency(String readingProficiency) {
+		this.readingProficiency = readingProficiency;
+	}
+
+	public String getSpeakingProficiency() {
+		return speakingProficiency;
+	}
+
+	public void setSpeakingProficiency(String speakingProficiency) {
+		this.speakingProficiency = speakingProficiency;
+	}
+
+	public String getListeningProficiency() {
+		return listeningProficiency;
+	}
+
+	public void setListeningProficiency(String listeningProficiency) {
+		this.listeningProficiency = listeningProficiency;
+	}
 }
