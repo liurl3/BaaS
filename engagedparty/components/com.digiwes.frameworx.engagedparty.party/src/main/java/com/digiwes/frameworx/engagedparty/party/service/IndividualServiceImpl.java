@@ -5,32 +5,66 @@ import com.digiwes.frameworx.engagedparty.party.bean.IndividualName;
 import com.digiwes.frameworx.engagedparty.party.bean.LanguageAbility;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-/**
- * Created by zhaoyp-pc on 2016/3/9.
- */
+@Component(name = "individualService",immediate = true)
+@Service(value = {IndividualQueryService.class,IndividualUpdateService.class})
 public class IndividualServiceImpl implements IndividualQueryService ,IndividualUpdateService{
     @Override
     public LanguageAbility retrieveLanguageAbility(Individual individual, String alphabetName, String dailectName) {
+        if( null != individual ){
+            Set<LanguageAbility> _languageAbilitys = individual.get_languageAbilitys();
+            if(_languageAbilitys!= null){
+                for(LanguageAbility languageAbility :_languageAbilitys){
+                    if(languageAbility.get_language().getAlphabetName().equals(alphabetName) && languageAbility.get_language().getDialectNames().equals(dailectName)){
+                        return  languageAbility ;
+                    }
+                }
+            }
+        }else{
+            throw  new IllegalArgumentException("invididual  must not be  null ");
+        }
         return null;
     }
 
     @Override
     public List<IndividualName> retrieveOptionalIndividualName(Individual individual, Date date) {
-        return null;
+        List<IndividualName> partyNames = new ArrayList() ;
+        if( null != individual ){
+            if(null != individual.get_optionalIndividualName() ){
+                for (IndividualName individualName :individual.get_optionalIndividualName()){
+                    if(date == null || null == individualName.getValidFor()  || individualName.getValidFor().isCover(date)){
+                        partyNames.add(individualName);
+                    }
+                }
+            }
+        }else{
+            throw  new IllegalArgumentException("invididual  must not be  null ");
+        }
+        return partyNames ;
     }
 
     @Override
     public Individual retrieveIndividualById(String partyId) {
+
         return null;
     }
 
     @Override
     public Individual hasLanguageAbility(Individual individual, LanguageAbility languageAbility) {
-        return null;
+        if(null != individual ){
+            individual.get_languageAbilitys().add(languageAbility);
+            return  individual;
+        }else{
+            throw  new IllegalArgumentException("invididual  must not be  null ");
+        }
+
     }
 
     @Override
