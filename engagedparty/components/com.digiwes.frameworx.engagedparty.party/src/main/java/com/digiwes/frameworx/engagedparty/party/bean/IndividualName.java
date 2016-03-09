@@ -1,6 +1,9 @@
 package com.digiwes.frameworx.engagedparty.party.bean;
 
 import com.digiwes.frameworx.common.basetype.TimePeriod;
+import org.apache.commons.beanutils.BeanUtils;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * A word, term, or phrase by which an individual is known and distinguished from other individuals.A name is an informal way of identifying an object [Fowler]This entity allows for international naming variations. An IndividualName is a type of PartyName.
@@ -192,5 +195,23 @@ public class IndividualName   {
 
 	public void setQualifications(String qualifications) {
 		this.qualifications = qualifications;
+	}
+
+	public void copyFrom(IndividualName partyName) {
+		if (null != partyName) {
+			try {
+				BeanUtils.copyProperties(this, partyName);
+				if(partyName.getValidFor() != null ){
+					TimePeriod validFor = partyName.getValidFor().clone();
+					if ( null != validFor) {
+						setValidFor(validFor);
+					}
+				}
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
