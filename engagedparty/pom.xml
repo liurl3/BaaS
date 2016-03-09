@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+      <groupId>com.digiwes</groupId>
+      <artifactId>wes-ta-parent</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.digiwes.frameworx</groupId>
+    <artifactId>com.digiwes.frameworx.engagedparty</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>com.digiwes.frameworx.engagedparty</name>
+    <description>Digiwes project description</description>
+    <url>http://www.digiwes.com</url>
+
+    <properties>
+        <orbit.version.axis2>1.6.1.wso2v12</orbit.version.axis2>
+        <axis2.client.osgi.version>1.6.1.wso2v12</axis2.client.osgi.version>
+        <orbit.version.axiom>1.2.11.wso2v6</orbit.version.axiom>
+        <orbit.version.wsdl4j>1.6.2.wso2v4</orbit.version.wsdl4j>
+        <wso2carbon.version>4.2.0</wso2carbon.version>
+    </properties>
+    <repositories>
+        <repository>
+            <id>digiwes-releases</id>
+            <name>Digiwes Releases</name>
+            <url>http://com.digiwes.cn:8081/content/repositories/digiwes-releases</url>
+        </repository>
+        <repository>
+            <id>digiwes-snapshots</id>
+            <name>Digiwes Snapshots</name>
+            <url>http://com.digiwes.cn:8081/content/repositories/digiwes-snapshots</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    <distributionManagement>
+        <repository>
+            <id>digiwes-releases</id>
+            <name>Digiwes Releases</name>
+            <url>http://com.digiwes.cn:8081/content/repositories/digiwes-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>digiwes-snapshots</id>
+            <name>Digiwes Snapshots</name>
+            <url>http://com.digiwes.cn:8081/content/repositories/digiwes-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+  <modules>
+    <module>components</module>
+    <module>features</module>
+    <module>repository</module>
+  </modules>
+</project>
