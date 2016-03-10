@@ -1,0 +1,59 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx"
+	Version="4.0">
+	<edmx:DataServices>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm"
+			Namespace="partyDemo">
+			<EntityType Name="Party" Abstract="true">
+				<key>
+					<PropertyRef Name="partyID" />
+				</key>
+				<Property Name="partyID" Type="Edm.String" Nullable="false" />
+				<Property Name="validFor" Type="partyDemo.TimePeriod"
+					Nullable="false" />
+			</EntityType>
+			<EntityType Name="Individual" BaseType="partyDemo.Party">
+				<Property Name="Nationality" Type="Edm.String" />
+				<Property Name="Gender" Type="partyDemo.Gender" />
+				<Property Name="formattedName" Type="Edm.String" Nullable="false" />
+				<NavigationProperty Name="DefaultName"
+					Type="partyDemo.IndividualName" Nullable="false" Partner="Individual">
+					<ReferentialConstraint Property="formattedName"
+						ReferencedProperty="formattedName" />
+				</NavigationProperty>
+				<NavigationProperty Name="OptName"
+					Type="Collection(partyDemo.IndividualName)" Partner="Individual">
+				</NavigationProperty>
+			</EntityType>
+			<EntityType Name="IndividualName">
+				<key>
+					<PropertyRef Name="formattedName" />
+				</key>
+				<Property Name="ruleCounty" Type="Edm.String" />
+				<Property Name="formattedName" Type="Edm.String" Nullable="false" />
+				<Property Name="familyName" Type="Edm.String" />
+				<Property Name="givenName" Type="Edm.String" />
+				<Property Name="middleName" Type="Edm.String" />
+				<NavigationProperty Name="Person" Type="partyDemo.Individual"
+					Nullable="false" Partner="IndividualNames" />
+			</EntityType>
+			<ComplexType Name="TimePeriod">
+				<Property Name="startTime" Type="Edm.DateTimeOffset" />
+				<Property Name="endTime" Type="Edm.DateTimeOffset" />
+			</ComplexType>
+			<Funtion Name="GetChineseName">
+				<Parameter Name="partyID" Type="Edm.String" />
+				<ReturnType Type="partyDemo.Individual" />
+			</Funtion>
+			<EntityContainer Name="PartyCoreService">
+				<EntitySet Name="Partys" EnityType="partyDemo.Party">
+				</EntitySet>
+				<EntitySet Name="Individuals" EnityType="partyDemo.Individual">
+					<NavigationPropertyBinding Path="IndividualName"
+						Target="Individuals" />
+				</EntitySet>
+				<FunctionImport Name="GetChineseName" EntitySet="Products"
+					Function="partyDemo.ProductsByRating" />
+			</EntityContainer>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>
