@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.olingo.commons.api.data.ContextURL;
 import org.apache.olingo.commons.api.data.ContextURL.Suffix;
@@ -62,8 +63,6 @@ import org.apache.olingo.server.api.uri.UriResourceProperty;
 import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 
-import com.digiwes.tryout.odata.DataProvider.DataProviderException;
-
 /**
  * This processor will deliver entity collections, single entities as well as properties of an entity.
  * This is a very simple example which should give you a rough guideline on how to implement such an processor.
@@ -73,13 +72,15 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
     PrimitiveProcessor, PrimitiveValueProcessor, ComplexProcessor {
 
   private OData odata;
-  private final DataProvider dataProvider;
+  //private final DataProvider dataProvider;
+    private Map<String, IDataProvider> dataProviderMap;
   private ServiceMetadata edm;
 
   // This constructor is application specific and not mandatory for the Olingo library. We use it here to simulate the
   // database access
-  public PartyProcessor(final DataProvider dataProvider) {
-    this.dataProvider = dataProvider;
+  public PartyProcessor(final Map<String, IDataProvider> dataProviderMap) {
+    //this.dataProvider = dataProvider;
+      this.dataProviderMap = dataProviderMap;
   }
 
 //  @Override
@@ -96,8 +97,12 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
 
     // Second we fetch the data for this specific entity set from the mock database and transform it into an EntitySet
     // object which is understood by our serialization
-    EntityCollection entitySet = dataProvider.readAll(edmEntitySet);
-
+    EntityCollection entitySet;
+      try {
+          entitySet = dataProviderMap.get(edmEntitySet.getName()).readAll(edmEntitySet);
+      } catch (DataProviderException e) {
+          throw new ODataApplicationException(e.getMessage(), 500, Locale.ENGLISH);
+      }
     // Next we create a serializer based on the requested format. This could also be a custom format but we do not
     // support them in this example
     ODataSerializer serializer = odata.createSerializer(requestedContentType);
@@ -273,10 +278,10 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
   }
 
   private Entity readEntityInternal(final UriInfoResource uriInfo, final EdmEntitySet entitySet)
-      throws DataProvider.DataProviderException {
+      throws DataProviderException {
     // This method will extract the key values and pass them to the data provider
     final UriResourceEntitySet resourceEntitySet = (UriResourceEntitySet) uriInfo.getUriResourceParts().get(0);
-    return dataProvider.read(entitySet, resourceEntitySet.getKeyPredicates());
+    return dataProviderMap.get(entitySet.getName()).read(entitySet, resourceEntitySet.getKeyPredicates());
   }
 
   private EdmEntitySet getEdmEntitySet(final UriInfoResource uriInfo) throws ODataApplicationException {

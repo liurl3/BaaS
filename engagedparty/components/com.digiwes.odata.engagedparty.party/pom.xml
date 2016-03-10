@@ -46,13 +46,23 @@
 			<artifactId>javax.servlet</artifactId>
 			<version>3.0.0.v201112011016</version>
 		</dependency>
+		<dependency>
+			<groupId>com.digiwes.frameworx</groupId>
+			<artifactId>com.digiwes.frameworx.common.basetype</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.digiwes.frameworx</groupId>
+			<artifactId>com.digiwes.frameworx.engagedparty.party</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-scr-plugin</artifactId>
-				<version>1.7.4</version>
+				<!--<version>1.7.4</version>-->
 				<executions>
 					<execution>
 						<id>generate-scr-scrdescriptor</id>
@@ -73,7 +83,9 @@
 						<Import-Package>
 							javax.servlet; version="[2.6.0, 3.0.0)",
 							javax.servlet.http; version="[2.6.0, 3.0.0)",
-							*;resolution:=optional
+							*;resolution:=optional,
+							com.digiwes.frameworx.common.basetype,
+							com.digiwes.frameworx.engagedparty.party.bean
 						</Import-Package>
 					</instructions>
 				</configuration>
