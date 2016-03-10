@@ -12,7 +12,7 @@ public interface IndividualUpdateService{
 	
 	public Individual modifyDefaultName(Individual individual,  IndividualName name);
 	 
-	public Individual addOptionalIndividualName(Individual individual, IndividualName name) ;
+	public Individual addOptionalIndividualName(Individual individual, IndividualName name) throws Exception;
 	
 	public Individual modifyAlias(Individual individual,  IndividualName fromName,   IndividualName toName) ;
 	

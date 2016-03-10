@@ -16,5 +16,10 @@ public class DefaultIndividualName extends IndividualName implements Serializabl
 		this._individual = _individual;
 	}
 
+	public DefaultIndividualName() {
+	}
 
+	public DefaultIndividualName( String givenName, String familyName) {
+		super(givenName,familyName);
+	}
 }

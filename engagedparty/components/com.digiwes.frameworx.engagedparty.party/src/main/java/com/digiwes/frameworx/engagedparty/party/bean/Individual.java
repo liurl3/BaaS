@@ -51,6 +51,12 @@ public class Individual  {
 	 */
 	private TimePeriod aliveDuring;
 
+	public Individual(DefaultIndividualName _defaultIndividualName, TimePeriod validFor, String placeOfBirth) {
+		this._defaultIndividualName = _defaultIndividualName;
+		this.validFor = validFor;
+		this.placeOfBirth = placeOfBirth;
+	}
+
 	public String getIndividualId() {
 		return individualId;
 	}

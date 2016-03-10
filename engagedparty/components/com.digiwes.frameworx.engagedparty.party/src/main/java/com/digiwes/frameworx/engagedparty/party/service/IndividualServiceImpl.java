@@ -7,15 +7,15 @@ import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateServi
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component(name = "individualService",immediate = true)
 @Service(value = {IndividualQueryService.class,IndividualUpdateService.class})
 public class IndividualServiceImpl implements IndividualQueryService ,IndividualUpdateService{
+
+    public static int individualId = 1;
+    public static Map<String, Individual> individualMap = new HashMap();
+
     @Override
     public LanguageAbility retrieveLanguageAbility(Individual individual, String alphabetName, String dailectName) {
         if( null != individual ){
@@ -47,12 +47,17 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
         }else{
             throw  new IllegalArgumentException("invididual  must not be  null ");
         }
+
         return partyNames ;
     }
 
     @Override
-    public Individual retrieveIndividualById(String partyId) {
-
+        public Individual retrieveIndividualById(String partyId) {
+        for(String key : individualMap.keySet()){
+            if(key.equals(partyId)){
+                return individualMap.get(key);
+            }
+        }
         return null;
     }
 
@@ -102,7 +107,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
             } else {
                 historyName.getValidFor().setEndDateTime(new Date(defaultPartyEndTime.getTime() - 2*1000));
             }
-            DefaultIndividualName defaultIndividualName =  covertToDefautlName(individual, name);
+            DefaultIndividualName defaultIndividualName =  covertToDefaultName(individual, name);
             if( null == defaultIndividualName.getValidFor()){
                 TimePeriod validFor = new TimePeriod(defaultPartyEndTime,null);
                 defaultIndividualName.setValidFor(validFor);
@@ -120,7 +125,13 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
     }
 
     @Override
-    public Individual addOptionalIndividualName(Individual individual, IndividualName name) {
+    public Individual addOptionalIndividualName(Individual individual, IndividualName name)throws Exception{
+        if(null==individual){
+            throw new Exception("individual must not be null");
+        }
+        if(null==name){
+            throw new Exception("individualName must not be null");
+        }
         OptionalIndividualName aliasIndividualName = convertOptionalIndividualName(individual, name);
         Set<OptionalIndividualName> optionalIndividualNameSet = new HashSet();
         optionalIndividualNameSet.add(aliasIndividualName);
@@ -147,7 +158,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
     public boolean eliminateAlias(Individual individual, IndividualName name) {
         OptionalIndividualName oldaliasIndividualName = convertOptionalIndividualName(individual, name);
         for (OptionalIndividualName optionalIndividualName : individual.get_optionalIndividualName() ){
-            if(optionalIndividualName .equals(oldaliasIndividualName)){
+            if(optionalIndividualName.equals(oldaliasIndividualName)){
                 individual.get_optionalIndividualName().remove(optionalIndividualName);
                 break;
             }
@@ -157,27 +168,106 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
 
     @Override
     public boolean delIndividual(String partyId) {
-
-        return false;
+        for(String key : individualMap.keySet()){
+            if(key.equals(partyId)){
+                individualMap.remove(key);
+            }
+        }
+        return true;
     }
 
     @Override
     public Individual createIndividual(Individual individual) {
-
-        return null;
+        individual.setIndividualId(individualId+"");
+        individualMap.put(individualId+"", individual);
+        individualId++;
+        return individual;
     }
 
     private OptionalIndividualName convertOptionalIndividualName (Individual individual, IndividualName invidualName){
-        OptionalIndividualName optionalIndividualName = new OptionalIndividualName();
+        OptionalIndividualName optionalIndividualName = new OptionalIndividualName("familyNameOption", "givenNameOption");
         optionalIndividualName.copyFrom(invidualName);
         optionalIndividualName.set_individual(individual);
         return  optionalIndividualName;
     }
 
-    private DefaultIndividualName covertToDefautlName(Individual individual, IndividualName invidualName){
-        DefaultIndividualName defaultIndividualName = new DefaultIndividualName();
+    private DefaultIndividualName covertToDefaultName(Individual individual, IndividualName invidualName){
+        DefaultIndividualName defaultIndividualName = new DefaultIndividualName("givenName","familyName");
         defaultIndividualName.copyFrom(invidualName);
         defaultIndividualName.set_individual(individual);
         return defaultIndividualName;
+    }
+
+    public static void main(String[] args) throws Exception{
+        IndividualServiceImpl individualService = new IndividualServiceImpl();
+        /*data init*/
+        DefaultIndividualName defaultIndividualNameOne = new DefaultIndividualName("givenNameOne","familyNameOne");
+        DefaultIndividualName defaultIndividualNameTwo = new DefaultIndividualName("givenNameTwo","familyNameTwo");
+        DefaultIndividualName defaultIndividualNameThree = new DefaultIndividualName("givenNameThree","familyNameThree");
+        DefaultIndividualName defaultIndividualNameFour = new DefaultIndividualName("givenNameFour","familyNameFour");
+        Individual individualOne = new Individual(defaultIndividualNameOne, TimePeriod.DEFAULT_VALID_FOR, "birthPlace");
+        Individual individualTwo = new Individual(defaultIndividualNameTwo, TimePeriod.DEFAULT_VALID_FOR, "birthPlace");
+        Individual individualThree = new Individual(defaultIndividualNameThree, TimePeriod.DEFAULT_VALID_FOR, "birthPlace");
+        Individual individualFour = new Individual(defaultIndividualNameFour, TimePeriod.DEFAULT_VALID_FOR, "birthPlace");
+
+        /*create individual*/
+        Individual individualGetOne = individualService.createIndividual(individualOne);
+        System.out.println(individualGetOne.getIndividualId());
+
+        Individual individualGetTwo = individualService.createIndividual(individualTwo);
+        System.out.println(individualGetTwo.getIndividualId());
+
+        Individual individualGetThree = individualService.createIndividual(individualThree);
+        System.out.println(individualGetThree.getIndividualId());
+
+        Individual individualGetFour = individualService.createIndividual(individualFour);
+        System.out.println(individualGetFour.getIndividualId());
+
+        Individual individual = individualService.retrieveIndividualById("2");
+        System.out.println("individual information = " + individual.getIndividualId());
+
+        System.out.println("map size ===" + individualMap.size());
+        boolean rtnFlag = individualService.delIndividual("4");
+        System.out.println("rtnFlag===" + rtnFlag);
+        System.out.println("map size ===" + individualMap.size());
+
+
+        /*add optionalName*/
+        IndividualName individualNameOne = new IndividualName("familyNameIndividual", "givenNameIndividual");
+        Individual individualOptionNameOne = individualService.addOptionalIndividualName(individualGetOne, individualNameOne);
+        Set<OptionalIndividualName> optionNameOneSet = individualOptionNameOne.get_optionalIndividualName();
+        for(OptionalIndividualName optionalIndividualName : optionNameOneSet){
+            String familyName = optionalIndividualName.getFamilyNames();
+            System.out.println("familyName==="+familyName);
+        }
+        System.out.println("individualOptionNameOne==="+individualOptionNameOne.get_optionalIndividualName().size());
+
+        /*retrieve optional name*/
+        Date date = new Date();
+        List<IndividualName> individualNameList = individualService.retrieveOptionalIndividualName(individualGetOne, date);
+        System.out.println("individualNameList======================"+individualNameList.size());
+
+        /*modify optionalName*/
+        IndividualName individualNameOneTo = new IndividualName("familyNameIndividualTo", "givenNameIndividualTo");
+        Individual individualOptionNameOneTo = individualService.modifyAlias(individualGetOne, individualNameOne, individualNameOneTo);
+        Set<OptionalIndividualName> optionNameOneSetTo = individualOptionNameOneTo.get_optionalIndividualName();
+        for(OptionalIndividualName optionalIndividualNameTo : optionNameOneSetTo){
+            String familyNameTo = optionalIndividualNameTo.getFamilyNames();
+            System.out.println("familyNameTo==="+familyNameTo);
+        }
+        System.out.println("individualOptionNameOne==="+individualOptionNameOneTo.get_optionalIndividualName().size());
+
+        /*eliminate optionalName*/
+        IndividualName individualNameOneMore = new IndividualName("familyNameIndividualTo", "givenNameIndividualTo"); //这个是已经存在的optionName
+        boolean rtnFlagEliminate = individualService.eliminateAlias(individualGetOne, individualNameOneMore);
+        System.out.println("rtnFlagEliminate==="+rtnFlagEliminate);
+        System.out.println("individualGetOne.get_optionalIndividualName() ==   "+individualGetOne.get_optionalIndividualName());
+
+        /*modify default name*/
+        IndividualName individualName = new IndividualName("familyNameDefault", "givenNameDefault");
+        System.out.println(individualGetOne.get_defaultIndividualName().getFamilyNames());
+        Individual individualDefaultName = individualService.modifyDefaultName(individualGetOne, individualName);
+        System.out.println(individualDefaultName.get_defaultIndividualName().getFamilyNames());
+
     }
 }

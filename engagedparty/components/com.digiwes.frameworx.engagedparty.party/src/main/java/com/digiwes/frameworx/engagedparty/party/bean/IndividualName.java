@@ -214,4 +214,32 @@ public class IndividualName   {
 			}
 		}
 	}
+
+	public IndividualName() {
+
+	}
+
+	public IndividualName( String familyName, String givenName) {
+		this.givenNames = givenName ;
+		this.familyNames = familyName ;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		IndividualName that = (IndividualName) o;
+
+		if (givenNames != null ? !givenNames.equals(that.givenNames) : that.givenNames != null) return false;
+		return !(familyNames != null ? !familyNames.equals(that.familyNames) : that.familyNames != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = givenNames != null ? givenNames.hashCode() : 0;
+		result = 31 * result + (familyNames != null ? familyNames.hashCode() : 0);
+		return result;
+	}
 }
