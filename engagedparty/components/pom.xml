@@ -13,6 +13,8 @@
     <modules>
         <module>com.digiwes.frameworx.engagedparty.party</module>
         <module>com.digiwes.frameworx.engagedparty.party.api</module>
+        <module>olingo-server-4.1.0-wes1</module>
+        <module>com.digiwes.odata.engagedparty.party</module>
     </modules>
 
     <packaging>pom</packaging>

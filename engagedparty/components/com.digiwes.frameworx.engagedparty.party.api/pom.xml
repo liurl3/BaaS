@@ -25,6 +25,22 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.digiwes.frameworx</groupId>
+            <artifactId>com.digiwes.frameworx.engagedparty.party</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.json.wso2</groupId>
+            <artifactId>json</artifactId>
+            <version>3.0.0.wso2v1</version>
+        </dependency>-->
     </dependencies>
 
     <build>
@@ -49,9 +65,9 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Export-Package></Export-Package>
+                        <Export-Package>com.digiwes.frameworx.engagedparty.party.api.service</Export-Package>
                         <Private-Package></Private-Package>
-                        <Import-Package></Import-Package>
+                        <Import-Package>com.digiwes.frameworx.engagedparty.party.bean,com.digiwes.frameworx.engagedparty.party.interfaces</Import-Package>
                         <DynamicImport-Package></DynamicImport-Package>
                     </instructions>
                 </configuration>
