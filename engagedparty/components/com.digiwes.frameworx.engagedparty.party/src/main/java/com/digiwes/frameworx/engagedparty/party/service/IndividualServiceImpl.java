@@ -133,9 +133,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
             throw new Exception("individualName must not be null");
         }
         OptionalIndividualName aliasIndividualName = convertOptionalIndividualName(individual, name);
-        Set<OptionalIndividualName> optionalIndividualNameSet = new HashSet();
-        optionalIndividualNameSet.add(aliasIndividualName);
-        individual.set_optionalIndividualName(optionalIndividualNameSet);
+        individual.get_optionalIndividualName().add(aliasIndividualName);
         return individual;
     }
 
