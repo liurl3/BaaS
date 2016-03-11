@@ -8,7 +8,7 @@ public class App implements BundleActivator {
         System.out.println("Starting Bundle.");
     }
     public void stop(BundleContext context) {
-        System.out.println("Stopp Bundle.");
+        System.out.println("Stop Bundle.");
     }
     
 }
