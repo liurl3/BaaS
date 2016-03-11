@@ -88,6 +88,9 @@ public class IndividualResourceImpl implements IndividualFactory {
     }
     @Override
     public Entity convertBean(Individual bean) throws IntrospectionException {
+        if (null == bean) {
+            return null;
+        }
         Class type = bean.getClass();
         Entity entity = new Entity();
         BeanInfo beanInfo = Introspector.getBeanInfo(type);

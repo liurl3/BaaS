@@ -6,7 +6,11 @@ import com.digiwes.frameworx.engagedparty.party.bean.OptionalIndividualName;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
 import com.digiwes.tryout.odata.providers.IndividualServiceComponent;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
 import org.apache.olingo.commons.api.data.Entity;
+import org.osgi.service.component.ComponentContext;
 
 import java.beans.IntrospectionException;
 import java.util.List;
@@ -15,16 +19,66 @@ import java.util.Set;
 /**
  * Created by nisx on 16-3-10.
  */
+@Component(name = "individual.resource", immediate = true)
+@Service(value = IndividualResource.class)
+///**
+// * @scr.component name="digiwes.servlet.individualresource" immediate="true"
+// *
+// * @scr.reference name="individual.query" interface="com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService"
+// * cardinality="1..1" policy="dynamic"  bind="bindindvQryServiceInstance" unbind="unbindindvQryServiceInstance"
+// * @scr.reference name="individual.update" interface="com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService"
+// * cardinality="1..1" policy="dynamic"  bind="bindindvUpdServiceInstance" unbind="unbindindvUpdServiceInstance"
+// * @scr.reference name="individual.factory" interface="com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory"
+// * cardinality="1..1" policy="dynamic"  bind="setIndividualFactory" unbind="unsetIndividualFactory"
+// */
 public class IndividualResourceImpl implements IndividualResource {
+    protected void activate(ComponentContext ctxt) {
 
-    // individualFactory
-    private IndividualFactory individualFactory = IndividualServiceComponent.getIndividualFactory();
+        System.out.println("IndividualResourceImpl is activated ");
+    }
 
-    // individualUpdateService
-    private IndividualUpdateService individualUpdateService = IndividualServiceComponent.getIndividualUpdateService();
+    protected void deactivate(ComponentContext ctxt) {
+        System.out.println("IndividualResourceImpl is deactivated ");
+    }
+    @Reference(bind = "bindindvQryServiceInstance",unbind = "unbindindvQryServiceInstance",referenceInterface = IndividualQueryService.class)
+    private IndividualQueryService individualQueryService;
+    @Reference(bind = "bindindvUpdServiceInstance",unbind = "unbindindvUpdServiceInstance", referenceInterface=IndividualUpdateService.class)
+    private IndividualUpdateService individualUpdateService;
+    protected void bindindvQryServiceInstance(IndividualQueryService individualQueryService) {
+        System.out.println("bindindvQryServiceInstance");
+        this.individualQueryService = individualQueryService;
+    }
 
-    // individualQueryService
-    private IndividualQueryService individualQueryService = IndividualServiceComponent.getIndividualQueryService();
+    protected void unbindindvQryServiceInstance(IndividualQueryService individualQueryService) {
+        System.out.println("unbindindvQryServiceInstance");
+        this.individualQueryService = null;
+    }
+
+    protected void bindindvUpdServiceInstance(IndividualUpdateService individualUpdateService) {
+        System.out.println("bindindvUpdServiceInstance");
+
+        this.individualUpdateService = individualUpdateService;
+    }
+
+    protected void unbindindvUpdServiceInstance(IndividualUpdateService individualUpdateService) {
+        System.out.println("unbindindvUpdServiceInstance");
+
+        this.individualUpdateService = null;
+    }
+    @Reference(bind = "setIndividualFactory",unbind = "unsetIndividualFactory", referenceInterface = IndividualFactory.class, name = "IndividualResource")
+    private IndividualFactory individualFactory;
+
+    protected void setIndividualFactory(IndividualFactory indivFactory){
+        System.out.println("setIndividualFactory");
+
+        individualFactory = indivFactory;
+    }
+
+    protected void unsetIndividualFactory(IndividualFactory indivFactory){
+        System.out.println("unsetIndividualFactory");
+
+        individualFactory = null;
+    }
 
     public Entity createParty(Entity requestEntity) throws Exception {
         //1. translate entity to individual
