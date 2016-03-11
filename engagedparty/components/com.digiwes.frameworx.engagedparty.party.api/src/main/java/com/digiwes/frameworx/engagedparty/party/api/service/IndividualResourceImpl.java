@@ -16,7 +16,9 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -26,12 +28,24 @@ import java.util.List;
 @Service(value = IndividualFactory.class)
 public class IndividualResourceImpl implements IndividualFactory {
     @Override
-    public Individual convertEntity(Entity entity) {
+    public Individual convertEntity(Entity entity) throws IntrospectionException {
+        Individual individual = new Individual();
+        PropertyDescriptor[] propertyDescriptors =  getPropertyDescriptor(individual);
         List<Property> properties = entity.getProperties();
         for(int i = 0 ;i < properties.size() ; i++){
-
+            Property property = properties.get(i);
+            String propertyName = property.getName();
+            Object propertyValue = property.getValue();
+            for(int j = 0 ; j < propertyDescriptors.length ; j++){
+                String beanPropertyName = propertyDescriptors[j].getName();
+                if(propertyName.equals(beanPropertyName)){
+                   // propertyDescriptors[j].getWriteMethod().invoke(individual,propertyValue);
+                    propertyDescriptors[j].setValue(beanPropertyName, propertyValue);
+                    break;
+                }
+            }
         }
-        return null;
+        return individual;
     }
     private PropertyDescriptor[] getPropertyDescriptor(Individual bean) throws IntrospectionException {
         Class type = bean.getClass();
@@ -72,8 +86,17 @@ public class IndividualResourceImpl implements IndividualFactory {
                 property = createPrimitive(propertyName,value);
             }else if(value instanceof Long){
                 property = createPrimitive(propertyName,value);
+            }else if(value instanceof Set){
+                Set setValue =(Set) value;
+                Iterator it = setValue.iterator();
+                while(it.hasNext()){
+                    Object obj = it.next();
+                    property = createComplexProperty(propertyName, obj);
+                }
             }else{
-                property = createComplexProperty(propertyName, value);
+                if(!"class".equals(propertyName)){
+                    property = createComplexProperty(propertyName, value);
+                }
             }
             entity.addProperty(property);
         }
@@ -82,15 +105,17 @@ public class IndividualResourceImpl implements IndividualFactory {
     private Property createComplexProperty(String name, Object bean) throws IntrospectionException {
         ComplexValue complexValue=new ComplexValue();
         List<Property> addressProperties = complexValue.getValue();
-        Class type = bean.getClass();
-        Entity entity = new Entity();
-        BeanInfo beanInfo = Introspector.getBeanInfo(type);
-        PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors();
-        for (int i = 0; i< propertyDescriptors.length; i++) {
-            PropertyDescriptor descriptor = propertyDescriptors[i];
-            String propertyName = descriptor.getName();
-            Object value = getPropertyValue(bean, propertyName);
-            complexValue.getValue().add(createPrimitive(propertyName, value));
+        if(null != bean){
+            Class type = bean.getClass();
+            Entity entity = new Entity();
+            BeanInfo beanInfo = Introspector.getBeanInfo(type);
+            PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors();
+            for (int i = 0; i< propertyDescriptors.length; i++) {
+                PropertyDescriptor descriptor = propertyDescriptors[i];
+                String propertyName = descriptor.getName();
+                Object value = getPropertyValue(bean, propertyName);
+                complexValue.getValue().add(createPrimitive(propertyName, value));
+            }
         }
         return  new Property(null,name, ValueType.COMPLEX, complexValue);
     }

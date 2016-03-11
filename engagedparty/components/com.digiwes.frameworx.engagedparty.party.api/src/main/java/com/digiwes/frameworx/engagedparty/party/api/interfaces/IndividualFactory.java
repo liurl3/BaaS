@@ -7,7 +7,7 @@ import java.beans.IntrospectionException;
 
 public interface IndividualFactory{
 	
-	public Individual convertEntity(Entity entity);
+	public Individual convertEntity(Entity entity) throws IntrospectionException;
 	
 	public Entity convertBean(Individual individual) throws IntrospectionException;
 	
