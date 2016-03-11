@@ -1,23 +1,14 @@
 package com.digiwes.tryout.odata.resource;
 
-import com.digiwes.frameworx.common.basetype.TimePeriod;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory;
 import com.digiwes.frameworx.engagedparty.party.bean.Individual;
-import com.digiwes.frameworx.engagedparty.party.bean.IndividualName;
 import com.digiwes.frameworx.engagedparty.party.bean.OptionalIndividualName;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
-import com.digiwes.tryout.odata.DataProviderException;
 import com.digiwes.tryout.odata.providers.IndividualServiceComponent;
-import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.Entity;
-import org.apache.olingo.commons.api.data.Property;
-import org.apache.olingo.commons.api.data.ValueType;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
@@ -26,14 +17,23 @@ import java.util.Set;
  */
 public class IndividualResourceImpl implements IndividualResource {
 
+    // individualFactory
+    private IndividualFactory individualFactory = IndividualServiceComponent.getIndividualFactory();
+
+    // individualUpdateService
+    private IndividualUpdateService individualUpdateService = IndividualServiceComponent.getIndividualUpdateService();
+
+    // individualQueryService
+    private IndividualQueryService individualQueryService = IndividualServiceComponent.getIndividualQueryService();
+
     public Entity createParty(Entity requestEntity) throws Exception {
-        //TODO 1. translate entity to individual
-        Individual individual = null;
+        //1. translate entity to individual
+        //Individual individual = null;
+        Individual individual = individualFactory.convertEntity(requestEntity);
         Set<OptionalIndividualName> optionalNames;
         optionalNames = individual.get_optionalIndividualName();
 
         //2. create individal
-        IndividualUpdateService individualUpdateService = IndividualServiceComponent.getIndividualUpdateService();
         Individual retIndividual = individualUpdateService.createIndividual(individual);
 
         //3. add optional name
@@ -41,11 +41,13 @@ public class IndividualResourceImpl implements IndividualResource {
             retIndividual = individualUpdateService.addOptionalIndividualName(retIndividual, optName);
         }
 
-        //TODO 4. translate individual to entity
-        return null;
+        //4. translate individual to entity
+        Entity rtnEntity = individualFactory.convertBean(retIndividual);
+        return rtnEntity;
     }
 
     public Entity updateParty(Entity requestEntity) {
+
         return null;
     }
 
@@ -54,11 +56,11 @@ public class IndividualResourceImpl implements IndividualResource {
     }
 
     public Entity retrievePartyById(String partyId) throws Exception {
-        IndividualQueryService service = IndividualServiceComponent.getIndividualQueryService();
-        Individual individualInfo = service.retrieveIndividualById(partyId);
+        Individual individualInfo = individualQueryService.retrieveIndividualById(partyId);
         //translate individualInfo to Entity
         try {
-            return convertBean(individualInfo);
+            //return convertBean(individualInfo);
+            return individualFactory.convertBean(individualInfo);
         } catch (IntrospectionException e) {
             e.printStackTrace();
             throw e;
@@ -66,11 +68,10 @@ public class IndividualResourceImpl implements IndividualResource {
     }
 
     public boolean delParty(String partyId) {
-        IndividualUpdateService individualUpdateService = IndividualServiceComponent.getIndividualUpdateService();
         return individualUpdateService.delIndividual(partyId);
     }
 
-    private Entity convertBean(Object bean) throws IntrospectionException {
+    /*private Entity convertBean(Object bean) throws IntrospectionException {
         if (null == bean) {
             return null;
         }
@@ -127,5 +128,5 @@ public class IndividualResourceImpl implements IndividualResource {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 }

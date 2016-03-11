@@ -1,5 +1,6 @@
 package com.digiwes.tryout.odata.providers;
 
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
 import com.digiwes.tryout.odata.resource.IndividualResource;
@@ -18,6 +19,9 @@ public class IndividualServiceComponent {
     private static IndividualUpdateService indvUpdServiceInstance;
 
     private static IndividualResource individualResourceInstance;
+
+    @Reference
+    private static IndividualFactory individualFactory;
 
     protected void setIndividualQueryService(IndividualQueryService individualQueryService) {
         indvQryServiceInstance = individualQueryService;
@@ -41,6 +45,15 @@ public class IndividualServiceComponent {
     protected void unsetIndividualResource(IndividualResource individualResource) {
         individualResourceInstance = null;
     }
+
+    protected void setIndividualFactory(IndividualFactory indivFactory){
+        individualFactory = indivFactory;
+    }
+
+    protected void unsetIndividualFactory(IndividualFactory indivFactory){
+        individualFactory = null;
+    }
+
     public static IndividualQueryService getIndividualQueryService() {
         return indvQryServiceInstance;
     }
@@ -51,5 +64,9 @@ public class IndividualServiceComponent {
 
     public static IndividualResource getIndividualResource() {
         return individualResourceInstance;
+    }
+
+    public static IndividualFactory getIndividualFactory(){
+        return individualFactory;
     }
 }
