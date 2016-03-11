@@ -1,4 +1,4 @@
-package com.digiwes.frameworx.engagedparty.party.api.service.interfaces;
+package com.digiwes.frameworx.engagedparty.party.api.interfaces;
 
 import com.digiwes.frameworx.engagedparty.party.bean.Individual;
 import org.apache.olingo.commons.api.data.Entity;

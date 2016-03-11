@@ -1,8 +1,8 @@
-package com.digiwes.frameworx.engagedparty.party.api.service.service;
+package com.digiwes.frameworx.engagedparty.party.api.service;
 
 import com.digiwes.frameworx.common.basetype.TimePeriod;
 import com.digiwes.frameworx.engagedparty.party.bean.Individual;
-import com.digiwes.frameworx.engagedparty.party.api.service.interfaces.IndividualFactory;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory;
 import com.digiwes.frameworx.engagedparty.party.bean.IndividualName;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
