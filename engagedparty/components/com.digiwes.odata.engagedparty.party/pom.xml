@@ -83,9 +83,7 @@
 						<Import-Package>
 							javax.servlet; version="[2.6.0, 3.0.0)",
 							javax.servlet.http; version="[2.6.0, 3.0.0)",
-							*;resolution:=optional,
-							com.digiwes.frameworx.common.basetype,
-							com.digiwes.frameworx.engagedparty.party.bean
+							*;resolution:=optional
 						</Import-Package>
 					</instructions>
 				</configuration>

@@ -21,4 +21,8 @@ public class PartyDataProvider implements IDataProvider {
     public Entity read(EdmEntitySet edmEntitySet, List<UriParameter> keys) throws DataProviderException {
         return null;
     }
+
+    public Entity create(EdmEntitySet edmEntitySet, Entity requestEntity) throws DataProviderException {
+        return null;
+    }
 }

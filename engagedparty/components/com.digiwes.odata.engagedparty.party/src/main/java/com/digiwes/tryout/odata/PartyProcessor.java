@@ -30,10 +30,7 @@ import org.apache.olingo.commons.api.data.ContextURL.Suffix;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Property;
-import org.apache.olingo.commons.api.edm.EdmComplexType;
-import org.apache.olingo.commons.api.edm.EdmEntitySet;
-import org.apache.olingo.commons.api.edm.EdmPrimitiveType;
-import org.apache.olingo.commons.api.edm.EdmProperty;
+import org.apache.olingo.commons.api.edm.*;
 import org.apache.olingo.commons.api.format.ContentType;
 import org.apache.olingo.commons.api.http.HttpHeader;
 import org.apache.olingo.commons.api.http.HttpStatusCode;
@@ -44,6 +41,8 @@ import org.apache.olingo.server.api.ODataRequest;
 import org.apache.olingo.server.api.ODataResponse;
 import org.apache.olingo.server.api.ServiceMetadata;
 import org.apache.olingo.server.api.deserializer.DeserializerException;
+import org.apache.olingo.server.api.deserializer.DeserializerResult;
+import org.apache.olingo.server.api.deserializer.ODataDeserializer;
 import org.apache.olingo.server.api.processor.ComplexProcessor;
 import org.apache.olingo.server.api.processor.EntityCollectionProcessor;
 import org.apache.olingo.server.api.processor.EntityProcessor;
@@ -163,8 +162,35 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
   public void createEntity(ODataRequest request, ODataResponse response, UriInfo uriInfo,
                            ContentType requestFormat, ContentType responseFormat)
           throws ODataApplicationException, DeserializerException, SerializerException {
-    throw new ODataApplicationException("Entity create is not supported yet.",
-            HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ENGLISH);
+
+      final EdmEntitySet edmEntitySet = getEdmEntitySet(uriInfo.asUriInfoResource());
+      EdmEntityType edmEntityType = edmEntitySet.getEntityType();
+      IDataProvider provider = dataProviderMap.get(edmEntitySet.getName());
+      if (null == provider) {
+          throw new ODataApplicationException("Entity create is not supported yet.",
+                  HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ENGLISH);
+      }
+      InputStream requestInputStream = request.getBody();
+      ODataDeserializer deserializer = this.odata.createDeserializer(requestFormat);
+      DeserializerResult result = deserializer.entity(requestInputStream, edmEntityType);
+      Entity requestEntity = result.getEntity();
+
+      Entity entity;
+      try {
+          entity = provider.create(edmEntitySet, requestEntity);
+      } catch (DataProviderException e) {
+          throw new ODataApplicationException(e.getMessage(), 500, Locale.ENGLISH);
+      }
+      // If an entity was found we proceed by serializing it and sending it to the client.
+      ODataSerializer serializer = odata.createSerializer(responseFormat);
+      InputStream serializedContent = serializer.entity(edm, edmEntitySet.getEntityType(), entity,
+              EntitySerializerOptions.with()
+                      .contextURL(isODataMetadataNone(responseFormat) ? null :
+                              getContextUrl(edmEntitySet, true, null, null, null))
+                      .build()).getContent();
+      response.setContent(serializedContent);
+      response.setStatusCode(HttpStatusCode.CREATED.getStatusCode());
+      response.setHeader(HttpHeader.CONTENT_TYPE, responseFormat.toContentTypeString());
   }
 
 //  @Override

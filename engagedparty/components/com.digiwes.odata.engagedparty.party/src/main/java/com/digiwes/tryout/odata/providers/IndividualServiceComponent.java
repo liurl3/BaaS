@@ -2,6 +2,7 @@ package com.digiwes.tryout.odata.providers;
 
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import com.digiwes.tryout.odata.resource.IndividualResource;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 
@@ -15,6 +16,8 @@ public class IndividualServiceComponent {
     private static IndividualQueryService indvQryServiceInstance;
     @Reference
     private static IndividualUpdateService indvUpdServiceInstance;
+
+    private static IndividualResource individualResourceInstance;
 
     protected void setIndividualQueryService(IndividualQueryService individualQueryService) {
         indvQryServiceInstance = individualQueryService;
@@ -31,6 +34,13 @@ public class IndividualServiceComponent {
     protected void unsetIndividualUpdateService(IndividualUpdateService individualUpdateService) {
         indvUpdServiceInstance = null;
     }
+    protected void setIndividualResource(IndividualResource individualResource) {
+        individualResourceInstance = individualResource;
+    }
+
+    protected void unsetIndividualResource(IndividualResource individualResource) {
+        individualResourceInstance = null;
+    }
     public static IndividualQueryService getIndividualQueryService() {
         return indvQryServiceInstance;
     }
@@ -39,4 +49,7 @@ public class IndividualServiceComponent {
         return indvUpdServiceInstance;
     }
 
+    public static IndividualResource getIndividualResource() {
+        return individualResourceInstance;
+    }
 }
