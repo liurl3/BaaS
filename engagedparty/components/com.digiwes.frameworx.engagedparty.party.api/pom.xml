@@ -65,7 +65,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Export-Package>com.digiwes.frameworx.engagedparty.party.api.service</Export-Package>
+                        <Export-Package>com.digiwes.frameworx.engagedparty.party.api.interfaces,com.digiwes.frameworx.engagedparty.party.api.service</Export-Package>
                         <Private-Package></Private-Package>
                         <Import-Package>com.digiwes.frameworx.engagedparty.party.bean,com.digiwes.frameworx.engagedparty.party.interfaces</Import-Package>
                         <DynamicImport-Package></DynamicImport-Package>
