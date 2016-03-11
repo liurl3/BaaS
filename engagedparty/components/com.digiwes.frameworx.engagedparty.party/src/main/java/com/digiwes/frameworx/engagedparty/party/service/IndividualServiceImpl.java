@@ -4,8 +4,10 @@ import com.digiwes.frameworx.common.basetype.TimePeriod;
 import com.digiwes.frameworx.engagedparty.party.bean.*;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
+import org.osgi.service.component.ComponentContext;
 
 import java.util.*;
 
@@ -15,6 +17,19 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
 
     public static int individualId = 1;
     public static Map<String, Individual> individualMap = new HashMap();
+    private static boolean isInit = false;
+    @Activate
+    protected void activate(ComponentContext ctxt) {
+        if (!isInit) {
+            System.out.println("DataInit");
+            try {
+                main(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            isInit = true;
+        }
+    }
 
     @Override
     public LanguageAbility retrieveLanguageAbility(Individual individual, String alphabetName, String dailectName) {
