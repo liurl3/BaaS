@@ -1,10 +1,10 @@
 package com.digiwes.tryout.odata.service;
 
 import com.digiwes.frameworx.common.basetype.TimePeriod;
-import com.digiwes.frameworx.engagedparty.party.bean.DefaultIndividualName;
-import com.digiwes.frameworx.engagedparty.party.bean.Individual;
-import com.digiwes.frameworx.engagedparty.party.bean.LanguageAbility;
-import com.digiwes.frameworx.engagedparty.party.bean.OptionalIndividualName;
+import com.digiwes.frameworx.engagedparty.party.api.bean.DefaultIndividualName;
+import com.digiwes.frameworx.engagedparty.party.api.bean.Individual;
+import com.digiwes.frameworx.engagedparty.party.api.bean.LanguageAbility;
+import com.digiwes.frameworx.engagedparty.party.api.bean.OptionalIndividualName;
 import com.digiwes.tryout.odata.interfaces.IIndividualFactory;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;

@@ -1,9 +1,9 @@
 package com.digiwes.frameworx.engagedparty.party.service;
 
 import com.digiwes.frameworx.common.basetype.TimePeriod;
-import com.digiwes.frameworx.engagedparty.party.bean.*;
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import com.digiwes.frameworx.engagedparty.party.api.bean.*;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualQueryService;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualUpdateService;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 

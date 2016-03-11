@@ -1,4 +1,4 @@
-package com.digiwes.frameworx.engagedparty.party.bean;
+package com.digiwes.frameworx.engagedparty.party.api.bean;
 
 import javax.validation.constraints.NotNull;
 
