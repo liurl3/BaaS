@@ -1,11 +1,17 @@
-package com.digiwes.frameworx.engagedparty.party.api.service;
+package com.digiwes.tryout.odata.service;
 
 import com.digiwes.frameworx.common.basetype.TimePeriod;
-import com.digiwes.frameworx.engagedparty.party.bean.*;
-import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory;
+import com.digiwes.frameworx.engagedparty.party.bean.DefaultIndividualName;
+import com.digiwes.frameworx.engagedparty.party.bean.Individual;
+import com.digiwes.frameworx.engagedparty.party.bean.LanguageAbility;
+import com.digiwes.frameworx.engagedparty.party.bean.OptionalIndividualName;
+import com.digiwes.tryout.odata.interfaces.IIndividualFactory;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
-import org.apache.olingo.commons.api.data.*;
+import org.apache.olingo.commons.api.data.ComplexValue;
+import org.apache.olingo.commons.api.data.Entity;
+import org.apache.olingo.commons.api.data.Property;
+import org.apache.olingo.commons.api.data.ValueType;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -13,15 +19,18 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
  * Created by liurl3 on 2016/3/9.
  */
-@Component(name = "IndividualResource" , immediate = true)
-@Service(value = IndividualFactory.class)
-public class IndividualResourceImpl implements IndividualFactory {
+@Component(name = "IndividualFactory" , immediate = true)
+@Service(value = IIndividualFactory.class)
+public class IndividualFactoryImpl implements IIndividualFactory {
     @Override
     public Individual convertEntity(Entity entity) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         Individual individual = new Individual();
@@ -31,33 +40,33 @@ public class IndividualResourceImpl implements IndividualFactory {
                 String propertyName = property.getName();
                 Object propertyValue = property.getValue();
                 PropertyDescriptor descriptor = new PropertyDescriptor(propertyName,individual.getClass());
-                        if("validFor".equals(propertyName)){
-                            ComplexValue complexValue = (ComplexValue)propertyValue;
-                            TimePeriod obj = createBeanProperty(complexValue, new TimePeriod());
-                            descriptor.getWriteMethod().invoke(individual,obj);
-                        }else if("_languageAbilitys".equals(propertyName)){
+                if("validFor".equals(propertyName)){
+                    ComplexValue complexValue = (ComplexValue)propertyValue;
+                    TimePeriod obj = createBeanProperty(complexValue, new TimePeriod());
+                    descriptor.getWriteMethod().invoke(individual,obj);
+                }else if("_languageAbilitys".equals(propertyName)){
 
-                            ComplexValue complexValue = (ComplexValue)propertyValue;
-                            createBeanProperty(complexValue,new LanguageAbility());
-                        }else if("_defaultIndividualName".equals(propertyName)){
-                            ComplexValue complexValue = (ComplexValue)propertyValue;
-                            DefaultIndividualName obj = createBeanProperty(complexValue, new DefaultIndividualName());
-                            descriptor.getWriteMethod().invoke(individual, obj);
-                        }else if("_optionalIndividualName".equals(propertyName)){
-                            ComplexValue complexValue = (ComplexValue)propertyValue;
-                            OptionalIndividualName optName = createBeanProperty(complexValue, new OptionalIndividualName());
-                        }else if("aliveDuring".equals(propertyName)){
-                            ComplexValue complexValue = (ComplexValue)propertyValue;
-                            TimePeriod obj = createBeanProperty(complexValue, new TimePeriod());
-                            descriptor.getWriteMethod().invoke(individual,obj);
-                        }else{
-                            propertyValue.getClass();
-                            if (propertyValue instanceof String) {
-                                descriptor.getWriteMethod().invoke(individual, (String) propertyValue);
-                            } else if(propertyValue instanceof Date){
-                                descriptor.getWriteMethod().invoke(individual, (Date) propertyValue);
-                            }
-                        }
+                    ComplexValue complexValue = (ComplexValue)propertyValue;
+                    createBeanProperty(complexValue,new LanguageAbility());
+                }else if("_defaultIndividualName".equals(propertyName)){
+                    ComplexValue complexValue = (ComplexValue)propertyValue;
+                    DefaultIndividualName obj = createBeanProperty(complexValue, new DefaultIndividualName());
+                    descriptor.getWriteMethod().invoke(individual, obj);
+                }else if("_optionalIndividualName".equals(propertyName)){
+                    ComplexValue complexValue = (ComplexValue)propertyValue;
+                    OptionalIndividualName optName = createBeanProperty(complexValue, new OptionalIndividualName());
+                }else if("aliveDuring".equals(propertyName)){
+                    ComplexValue complexValue = (ComplexValue)propertyValue;
+                    TimePeriod obj = createBeanProperty(complexValue, new TimePeriod());
+                    descriptor.getWriteMethod().invoke(individual,obj);
+                }else{
+                    propertyValue.getClass();
+                    if (propertyValue instanceof String) {
+                        descriptor.getWriteMethod().invoke(individual, (String) propertyValue);
+                    } else if(propertyValue instanceof Date){
+                        descriptor.getWriteMethod().invoke(individual, (Date) propertyValue);
+                    }
+                }
             }
         }
         System.out.println(individual);
@@ -124,7 +133,7 @@ public class IndividualResourceImpl implements IndividualFactory {
                         property = createComplexProperty(propertyName, obj);
                     }
                 }else{
-                        property = createComplexProperty(propertyName, value);
+                    property = createComplexProperty(propertyName, value);
                 }
             }
             entity.addProperty(property);

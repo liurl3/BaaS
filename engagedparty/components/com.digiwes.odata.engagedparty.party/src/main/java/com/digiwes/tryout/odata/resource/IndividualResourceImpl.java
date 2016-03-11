@@ -1,10 +1,10 @@
 package com.digiwes.tryout.odata.resource;
 
-import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory;
 import com.digiwes.frameworx.engagedparty.party.bean.Individual;
 import com.digiwes.frameworx.engagedparty.party.bean.OptionalIndividualName;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import com.digiwes.tryout.odata.interfaces.IIndividualFactory;
 import com.digiwes.tryout.odata.providers.IndividualServiceComponent;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
@@ -65,16 +65,16 @@ public class IndividualResourceImpl implements IndividualResource {
 
         this.individualUpdateService = null;
     }
-    @Reference(bind = "setIndividualFactory",unbind = "unsetIndividualFactory", referenceInterface = IndividualFactory.class, name = "IndividualResource")
-    private IndividualFactory individualFactory;
+    @Reference(bind = "setIndividualFactory",unbind = "unsetIndividualFactory", referenceInterface = IIndividualFactory.class, name = "IndividualResource")
+    private IIndividualFactory individualFactory;
 
-    protected void setIndividualFactory(IndividualFactory indivFactory){
+    protected void setIndividualFactory(IIndividualFactory indivFactory){
         System.out.println("setIndividualFactory");
 
         individualFactory = indivFactory;
     }
 
-    protected void unsetIndividualFactory(IndividualFactory indivFactory){
+    protected void unsetIndividualFactory(IIndividualFactory indivFactory){
         System.out.println("unsetIndividualFactory");
 
         individualFactory = null;

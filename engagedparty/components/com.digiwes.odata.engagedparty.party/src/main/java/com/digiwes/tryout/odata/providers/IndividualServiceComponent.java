@@ -1,6 +1,5 @@
 package com.digiwes.tryout.odata.providers;
 
-import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
 import com.digiwes.tryout.odata.IDataProvider;
