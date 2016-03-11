@@ -3,70 +3,54 @@ package com.digiwes.tryout.odata.providers;
 import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import com.digiwes.tryout.odata.IDataProvider;
+import com.digiwes.tryout.odata.PartyServlet;
 import com.digiwes.tryout.odata.resource.IndividualResource;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.http.HttpService;
+
+import java.util.Map;
 
 /**
  * Created by nisx on 16-3-10.
  */
-@Component
+///**
+// * @scr.component name="digiwes.servlet.individualcomponent" immediate="true"
+// * @scr.reference name="individual.resource" interface="com.digiwes.tryout.odata.resource.IndividualResource"
+// * cardinality="1..1" policy="dynamic"  bind="bindindividualResourceInstance" unbind="unbindindividualResourceInstance"
+// * @scr.reference name="individual.factory" interface="com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory"
+// * cardinality="1..1" policy="dynamic"  bind="setIndividualFactory" unbind="unsetIndividualFactory"
+// *
+// */
+@Component(name = "IndividualServiceComponent", immediate = true)
 public class IndividualServiceComponent {
 
-    @Reference
-    private static IndividualQueryService indvQryServiceInstance;
-    @Reference
-    private static IndividualUpdateService indvUpdServiceInstance;
+    protected void activate(ComponentContext ctxt) {
 
-    private static IndividualResource individualResourceInstance;
-
-    @Reference
-    private static IndividualFactory individualFactory;
-
-    protected void setIndividualQueryService(IndividualQueryService individualQueryService) {
-        indvQryServiceInstance = individualQueryService;
+        System.out.println("IndividualServiceComponent is activated ");
     }
 
-    protected void unsetIndividualQueryService(IndividualQueryService individualQueryService) {
-        indvQryServiceInstance = null;
+    protected void deactivate(ComponentContext ctxt) {
+        System.out.println("IndividualServiceComponent is deactivated ");
     }
 
-    protected void setIndividualUpdateService(IndividualUpdateService individualUpdateService) {
-        indvUpdServiceInstance = individualUpdateService;
-    }
+    @Reference(bind = "setIndividualResource", unbind = "unsetIndividualResource")
+    private static IndividualResource individualResource;
 
-    protected void unsetIndividualUpdateService(IndividualUpdateService individualUpdateService) {
-        indvUpdServiceInstance = null;
-    }
     protected void setIndividualResource(IndividualResource individualResource) {
-        individualResourceInstance = individualResource;
+        System.out.println("setIndividualResource");
+
+        this.individualResource = individualResource;
     }
 
     protected void unsetIndividualResource(IndividualResource individualResource) {
-        individualResourceInstance = null;
-    }
+        System.out.println("unsetIndividualResource");
 
-    protected void setIndividualFactory(IndividualFactory indivFactory){
-        individualFactory = indivFactory;
+        this.individualResource = null;
     }
-
-    protected void unsetIndividualFactory(IndividualFactory indivFactory){
-        individualFactory = null;
-    }
-
-    public static IndividualQueryService getIndividualQueryService() {
-        return indvQryServiceInstance;
-    }
-
-    public static IndividualUpdateService getIndividualUpdateService() {
-        return indvUpdServiceInstance;
-    }
-
     public static IndividualResource getIndividualResource() {
-        return individualResourceInstance;
-    }
-
-    public static IndividualFactory getIndividualFactory(){
-        return individualFactory;
+        return individualResource;
     }
 }

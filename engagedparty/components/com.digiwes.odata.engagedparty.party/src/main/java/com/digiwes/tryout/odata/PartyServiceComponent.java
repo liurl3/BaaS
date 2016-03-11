@@ -1,5 +1,7 @@
 package com.digiwes.tryout.odata;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Reference;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.http.HttpService;
 
@@ -7,13 +9,15 @@ import org.osgi.service.http.HttpService;
  * Created by huangxm on 3/9/2016.
  */
 
-/**
- * @scr.component name="digiwes.servlet.dscomponent" immediate="true"
- * @scr.reference name="http.service" interface="org.osgi.service.http.HttpService"
- * cardinality="1..1" policy="dynamic"  bind="setHttpService" unbind="unsetHttpService"
- */
+///**
+// * @scr.component name="digiwes.servlet.dscomponent" immediate="true"
+// * @scr.reference name="http.service" interface="org.osgi.service.http.HttpService"
+// * cardinality="1..1" policy="dynamic"  bind="setHttpService" unbind="unsetHttpService"
+// */
+@Component(name = "digiwes.servlet.dscomponent", immediate = true)
 public class PartyServiceComponent {
 
+    @Reference(bind = "setHttpService",unbind = "unsetHttpService")
     private static HttpService httpServiceInstance;
 
     protected void activate(ComponentContext ctxt) {

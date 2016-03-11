@@ -87,20 +87,20 @@ public class PartyEdmProvider extends CsdlAbstractEdmProvider {
       return new CsdlEntityType()
           .setBaseType(ET_PARTY)
           .setName(ET_INDIVIDUAL.getName())
-          // .setKey(Arrays.asList(new
-          // CsdlPropertyRef().setName("Id")))
+          .setKey(Arrays.asList(new
+           CsdlPropertyRef().setName("partyID")))
           .setProperties(
               Arrays.asList(
-                  // new
-                  // CsdlProperty().setName("partyID").setType(
-                  // EdmPrimitiveTypeKind.String
-                  // .getFullQualifiedName()),
+                   new
+                   CsdlProperty().setName("partyID").setType(
+                   EdmPrimitiveTypeKind.String
+                   .getFullQualifiedName()),
                   new CsdlProperty().setName("Nationality").setType(
                       EdmPrimitiveTypeKind.String.getFullQualifiedName()),
                   new CsdlProperty()
                       .setName("formattedName")
                       .setType(
-                          EdmPrimitiveTypeKind.String.getFullQualifiedName())
+                              EdmPrimitiveTypeKind.String.getFullQualifiedName())
                      .setNullable(false)))
           .setNavigationProperties(
               Arrays.asList(
