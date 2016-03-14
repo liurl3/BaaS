@@ -236,11 +236,13 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
             DefaultIndividualName defaultIndividualName = new DefaultIndividualName(defaultIndividualNameStrs[i][0],defaultIndividualNameStrs[i][1]);
             OptionalIndividualName optionalIndividualName = new OptionalIndividualName(optionalIndividualNameStrs[i][0],optionalIndividualNameStrs[i][1]);
             individual = new Individual(defaultIndividualName, TimePeriod.DEFAULT_VALID_FOR, "Beijing");
+            individual.setIndividualId(individualId+"");
             Language language = new Language(languageAbilityStr[i][0],languageAbilityStr[i][1]);
             LanguageAbility languageAbility = new LanguageAbility(language,languageAbilityStr[i][2],languageAbilityStr[i][3],languageAbilityStr[i][4],languageAbilityStr[i][5]);
             this.hasLanguageAbility(individual,languageAbility);
             this.addOptionalIndividualName(individual, optionalIndividualName);
-            individualMap.put((individualId++)+"",individual);
+            individualMap.put(individualId+"",individual);
+             individualId++;
         }
         System.out.println("IndividualServiceImpl initDate ======================================= "+individualMap.size());
     }
