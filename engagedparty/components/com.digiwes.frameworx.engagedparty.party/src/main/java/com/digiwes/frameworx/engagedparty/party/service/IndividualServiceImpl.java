@@ -4,6 +4,7 @@ import com.digiwes.frameworx.common.basetype.TimePeriod;
 import com.digiwes.frameworx.engagedparty.party.bean.*;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
 import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -21,9 +22,11 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
     @Activate
     protected void activate(ComponentContext ctxt) {
         if (!isInit) {
+            individualMap = new HashMap();
             System.out.println("DataInit");
             try {
-                main(null);
+                //main(null);
+                initData();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -67,7 +70,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
     }
 
     @Override
-        public Individual retrieveIndividualById(String partyId) {
+    public Individual retrieveIndividualById(String partyId) {
         for(String key : individualMap.keySet()){
             if(key.equals(partyId)){
                 return individualMap.get(key);
@@ -192,7 +195,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
     @Override
     public Individual createIndividual(Individual individual) {
         individual.setIndividualId(individualId+"");
-        individualMap.put(individualId+"", individual);
+        individualMap.put(individualId + "", individual);
         individualId++;
         return individual;
     }
@@ -211,9 +214,33 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
         return defaultIndividualName;
     }
 
-    public static void main(String[] args) throws Exception{
+    public   void initData()throws Exception{
+        String[][] defaultIndividualNameStrs = {
+                {"YunPing","Zhao"},{"WenHua","Dong"}
+        };
+        String [][] optionalIndividualNameStrs={ {"PingPing","Zhao"},{"XiaoYu","Dong"}};
+        String[][] languageAbilityStr = {
+                {"Chinese","Chinese","mastery","mastery","mastery","good"},{"English","English","mastery","mastery","mastery","good"}
+        } ;
+
+        Individual individual = null;
+        TimePeriod validFor = new TimePeriod(DateUtils.parseDate("2016-03-01","yyyy-MM-dd"),DateUtils.parseDate("2016-05-01","yyyy-MM-dd"));
+        for (int i =0  ; i<defaultIndividualNameStrs.length ; i++){
+            DefaultIndividualName defaultIndividualName = new DefaultIndividualName(defaultIndividualNameStrs[i][0],defaultIndividualNameStrs[i][1]);
+            OptionalIndividualName optionalIndividualName = new OptionalIndividualName(optionalIndividualNameStrs[i][0],optionalIndividualNameStrs[i][1]);
+            individual = new Individual(defaultIndividualName, validFor, "Beijing");
+            Language language = new Language(languageAbilityStr[i][0],languageAbilityStr[i][1]);
+            LanguageAbility languageAbility = new LanguageAbility(language,languageAbilityStr[i][2],languageAbilityStr[i][3],languageAbilityStr[i][4],languageAbilityStr[i][5]);
+            this.hasLanguageAbility(individual,languageAbility);
+            this.addOptionalIndividualName(individual,optionalIndividualName);
+            individualMap.put((individualId++)+"",individual);
+        }
+        System.out.println(individualMap.size());
+    }
+
+   /* public static void main(String[] args) throws Exception{
         IndividualServiceImpl individualService = new IndividualServiceImpl();
-        /*data init*/
+        *//*data init*//*
         DefaultIndividualName defaultIndividualNameOne = new DefaultIndividualName("givenNameOne","familyNameOne");
         DefaultIndividualName defaultIndividualNameTwo = new DefaultIndividualName("givenNameTwo","familyNameTwo");
         DefaultIndividualName defaultIndividualNameThree = new DefaultIndividualName("givenNameThree","familyNameThree");
@@ -223,7 +250,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
         Individual individualThree = new Individual(defaultIndividualNameThree, TimePeriod.DEFAULT_VALID_FOR, "birthPlace");
         Individual individualFour = new Individual(defaultIndividualNameFour, TimePeriod.DEFAULT_VALID_FOR, "birthPlace");
 
-        /*create individual*/
+        *//*create individual*//*
         Individual individualGetOne = individualService.createIndividual(individualOne);
         System.out.println(individualGetOne.getIndividualId());
 
@@ -245,7 +272,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
         System.out.println("map size ===" + individualMap.size());
 
 
-        /*add optionalName*/
+        *//*add optionalName*//*
         IndividualName individualNameOne = new IndividualName("familyNameIndividual", "givenNameIndividual");
         Individual individualOptionNameOne = individualService.addOptionalIndividualName(individualGetOne, individualNameOne);
         Set<OptionalIndividualName> optionNameOneSet = individualOptionNameOne.get_optionalIndividualName();
@@ -255,12 +282,12 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
         }
         System.out.println("individualOptionNameOne==="+individualOptionNameOne.get_optionalIndividualName().size());
 
-        /*retrieve optional name*/
+        *//*retrieve optional name*//*
         Date date = new Date();
         List<IndividualName> individualNameList = individualService.retrieveOptionalIndividualName(individualGetOne, date);
         System.out.println("individualNameList======================"+individualNameList.size());
 
-        /*modify optionalName*/
+        *//*modify optionalName*//*
         IndividualName individualNameOneTo = new IndividualName("familyNameIndividualTo", "givenNameIndividualTo");
         Individual individualOptionNameOneTo = individualService.modifyAlias(individualGetOne, individualNameOne, individualNameOneTo);
         Set<OptionalIndividualName> optionNameOneSetTo = individualOptionNameOneTo.get_optionalIndividualName();
@@ -270,17 +297,17 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
         }
         System.out.println("individualOptionNameOne==="+individualOptionNameOneTo.get_optionalIndividualName().size());
 
-        /*eliminate optionalName*/
+        *//*eliminate optionalName*//*
         IndividualName individualNameOneMore = new IndividualName("familyNameIndividualTo", "givenNameIndividualTo"); //这个是已经存在的optionName
         boolean rtnFlagEliminate = individualService.eliminateAlias(individualGetOne, individualNameOneMore);
         System.out.println("rtnFlagEliminate==="+rtnFlagEliminate);
         System.out.println("individualGetOne.get_optionalIndividualName() ==   "+individualGetOne.get_optionalIndividualName());
 
-        /*modify default name*/
+        *//*modify default name*//*
         IndividualName individualName = new IndividualName("familyNameDefault", "givenNameDefault");
         System.out.println(individualGetOne.get_defaultIndividualName().getFamilyNames());
         Individual individualDefaultName = individualService.modifyDefaultName(individualGetOne, individualName);
         System.out.println(individualDefaultName.get_defaultIndividualName().getFamilyNames());
 
-    }
+    }*/
 }

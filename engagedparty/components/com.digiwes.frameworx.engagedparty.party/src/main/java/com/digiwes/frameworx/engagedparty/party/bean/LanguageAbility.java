@@ -84,4 +84,14 @@ public class LanguageAbility {
 	public void setListeningProficiency(String listeningProficiency) {
 		this.listeningProficiency = listeningProficiency;
 	}
+
+	public LanguageAbility(@NotNull Language language, String listeningProficiency, String speakingProficiency, String readingProficiency, String writingProficiency) {
+
+		this._language = language ;
+		this.listeningProficiency = listeningProficiency ;
+		this.speakingProficiency = speakingProficiency ;
+		this.readingProficiency = readingProficiency ;
+		this.writingProficiency = writingProficiency ;
+
+	}
 }
