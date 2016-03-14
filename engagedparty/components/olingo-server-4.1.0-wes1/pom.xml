@@ -111,7 +111,7 @@
                             org.slf4j;version="[1.6,2)"
                         </Import-Package>
                         <Include-Resource>
-                            {maven-resources}
+                            <!--{maven-resources}-->
                         </Include-Resource>
                     </instructions>
                 </configuration>
