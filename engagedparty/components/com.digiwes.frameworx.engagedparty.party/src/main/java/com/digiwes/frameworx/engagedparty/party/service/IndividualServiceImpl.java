@@ -208,7 +208,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
     private OptionalIndividualName convertOptionalIndividualName (Individual individual, IndividualName invidualName){
         if(invidualName !=null ){
             OptionalIndividualName optionalIndividualName = new OptionalIndividualName(invidualName.getGivenNames(), invidualName.getFamilyNames());
-           optionalIndividualName.copyFrom(invidualName);
+            //optionalIndividualName.copyFrom(invidualName);
             optionalIndividualName.set_individual(individual);
             return  optionalIndividualName;
         }
