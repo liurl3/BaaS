@@ -96,7 +96,7 @@
 							*;resolution:=optional
 						</Import-Package>
 						<Export-Package>
-							com.digiwes.tryout.odata.resource
+							com.digiwes.tryout.odata.resource,com.digiwes.tryout.odata.service,com.digiwes.tryout.odata.interfaces
 						</Export-Package>
 					</instructions>
 				</configuration>

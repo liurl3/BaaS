@@ -42,22 +42,23 @@ public class IndividualFactoryImpl implements IIndividualFactory {
                     TimePeriod obj = createBeanProperty(complexValue, new TimePeriod());
                     descriptor.getWriteMethod().invoke(individual,obj);
                 }else if("_languageAbilitys".equals(propertyName)){
-
-                    ComplexValue complexValue = (ComplexValue)propertyValue;
-                    createBeanProperty(complexValue,new LanguageAbility());
+                   // ComplexValue complexValue = (ComplexValue)propertyValue;
+                   // Set<LanguageAbility> languageAbilities = createBeanCollection(complexValue);
+                   // descriptor.getWriteMethod().invoke(individual, languageAbilities);
                 }else if("_defaultIndividualName".equals(propertyName)){
                     ComplexValue complexValue = (ComplexValue)propertyValue;
                     DefaultIndividualName obj = createBeanProperty(complexValue, new DefaultIndividualName());
                     descriptor.getWriteMethod().invoke(individual, obj);
                 }else if("_optionalIndividualName".equals(propertyName)){
-                    ComplexValue complexValue = (ComplexValue)propertyValue;
-                    OptionalIndividualName optName = createBeanProperty(complexValue, new OptionalIndividualName());
+                    //ComplexValue complexValue = (ComplexValue)propertyValue;
+                    Set<ComplexValue> complexValue = (Set<ComplexValue>)propertyValue;
+                    Set<OptionalIndividualName> optionalIndividualNames = createBeanCollection(complexValue);
+                    descriptor.getWriteMethod().invoke(individual, optionalIndividualNames);
                 }else if("aliveDuring".equals(propertyName)){
                     ComplexValue complexValue = (ComplexValue)propertyValue;
                     TimePeriod obj = createBeanProperty(complexValue, new TimePeriod());
                     descriptor.getWriteMethod().invoke(individual,obj);
                 }else{
-                    propertyValue.getClass();
                     if (propertyValue instanceof String) {
                         descriptor.getWriteMethod().invoke(individual, (String) propertyValue);
                     } else if(propertyValue instanceof Date){
@@ -68,6 +69,26 @@ public class IndividualFactoryImpl implements IIndividualFactory {
         }
         System.out.println(individual);
         return individual;
+    }
+    private <T>Set<T> createBeanCollection(Set<ComplexValue> complexValues) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+        Set<T> outDatas = new HashSet();
+        Iterator it = complexValues.iterator();
+        while(it.hasNext()){
+            Object obj = it.next();
+            Property property = (Property)obj;
+            Object bean = null;
+            if(null != property) {
+                String propertyName = property.getName();
+                if ("_languageAbilitys".equals(propertyName)) {
+                    bean = new LanguageAbility();
+                } else if ("_optionalIndividualName".equals(propertyName)) {
+                    bean = new OptionalIndividualName();
+                }
+            }
+            ComplexValue complexValue = (ComplexValue)property.getValue();
+            outDatas.add((T) createBeanProperty(complexValue, bean));
+        }
+        return outDatas;
     }
 
     private <T> T createBeanProperty(ComplexValue complexValue,T bean) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
@@ -84,6 +105,10 @@ public class IndividualFactoryImpl implements IIndividualFactory {
                                 descriptor.getWriteMethod().invoke(bean, (String) propertyValue);
                             } else if(propertyValue instanceof Date){
                                 descriptor.getWriteMethod().invoke(bean, (Date) propertyValue);
+                            }else if(propertyValue instanceof ComplexValue){
+                                ComplexValue propertyComlex = (ComplexValue) propertyValue;
+                                TimePeriod valid = createBeanProperty(propertyComlex, new TimePeriod());
+                                descriptor.getWriteMethod().invoke(bean,valid);
                             }
                         }
                     }
@@ -154,7 +179,11 @@ public class IndividualFactoryImpl implements IIndividualFactory {
                 String propertyName = descriptor.getName();
                 if(!"class".equals(propertyName)){
                     Object value = getPropertyValue(bean, propertyName);
-                    complexValue.getValue().add(createPrimitive(propertyName, value));
+                    if(value instanceof TimePeriod){
+                        complexValue.getValue().add(createComplexProperty(propertyName, value));
+                    }else {
+                        complexValue.getValue().add(createPrimitive(propertyName, value));
+                    }
                 }
             }
         }
