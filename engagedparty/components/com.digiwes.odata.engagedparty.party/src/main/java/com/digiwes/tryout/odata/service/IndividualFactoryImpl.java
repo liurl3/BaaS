@@ -19,10 +19,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -123,15 +120,7 @@ public class IndividualFactoryImpl implements IIndividualFactory {
                 }else if(value instanceof Long){
                     property = createPrimitive(propertyName,value);
                 }else if(value instanceof Set){
-                    Set setValue =(Set) value;
-                    Iterator it = setValue.iterator();
-                    if(setValue.size()<1){
-                        property = createComplexProperty(propertyName, null);
-                    }
-                    while(it.hasNext()){
-                        Object obj = it.next();
-                        property = createComplexProperty(propertyName, obj);
-                    }
+                    property = createComplexCollection(propertyName, (Set) value);
                 }else{
                     property = createComplexProperty(propertyName, value);
                 }
@@ -140,6 +129,19 @@ public class IndividualFactoryImpl implements IIndividualFactory {
         }
         return entity;
     }
+
+    private Property createComplexCollection(String propertyName, Set value) throws IntrospectionException {
+        Collection outDatas = new HashSet();
+        Iterator it = value.iterator();
+
+        while(it.hasNext()){
+            Object obj = it.next();
+            Property propertyTemp = createComplexProperty(propertyName, obj);
+            outDatas.add(propertyTemp);
+        }
+        return new Property(null,propertyName,ValueType.COLLECTION_COMPLEX, outDatas);
+    }
+
     private Property createComplexProperty(String name, Object bean) throws IntrospectionException {
         ComplexValue complexValue=new ComplexValue();
         if(null != bean){
