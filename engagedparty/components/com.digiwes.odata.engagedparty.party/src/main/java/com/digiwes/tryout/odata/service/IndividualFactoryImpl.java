@@ -42,15 +42,14 @@ public class IndividualFactoryImpl implements IIndividualFactory {
                     TimePeriod obj = createBeanProperty(complexValue, new TimePeriod());
                     descriptor.getWriteMethod().invoke(individual,obj);
                 }else if("_languageAbilitys".equals(propertyName)){
-                   // ComplexValue complexValue = (ComplexValue)propertyValue;
-                   // Set<LanguageAbility> languageAbilities = createBeanCollection(complexValue);
-                   // descriptor.getWriteMethod().invoke(individual, languageAbilities);
+                    Set<ComplexValue> complexValue = (Set<ComplexValue>)propertyValue;
+                    Set<LanguageAbility> languageAbilities = createBeanCollection(complexValue);
+                    descriptor.getWriteMethod().invoke(individual, languageAbilities);
                 }else if("_defaultIndividualName".equals(propertyName)){
                     ComplexValue complexValue = (ComplexValue)propertyValue;
                     DefaultIndividualName obj = createBeanProperty(complexValue, new DefaultIndividualName());
                     descriptor.getWriteMethod().invoke(individual, obj);
                 }else if("_optionalIndividualName".equals(propertyName)){
-                    //ComplexValue complexValue = (ComplexValue)propertyValue;
                     Set<ComplexValue> complexValue = (Set<ComplexValue>)propertyValue;
                     Set<OptionalIndividualName> optionalIndividualNames = createBeanCollection(complexValue);
                     descriptor.getWriteMethod().invoke(individual, optionalIndividualNames);
@@ -67,7 +66,6 @@ public class IndividualFactoryImpl implements IIndividualFactory {
                 }
             }
         }
-        System.out.println(individual);
         return individual;
     }
     private <T>Set<T> createBeanCollection(Set<ComplexValue> complexValues) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
