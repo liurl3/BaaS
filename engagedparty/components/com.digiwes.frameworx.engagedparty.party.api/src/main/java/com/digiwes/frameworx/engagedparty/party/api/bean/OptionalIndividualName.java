@@ -1,4 +1,4 @@
-package com.digiwes.frameworx.engagedparty.party.bean;
+package com.digiwes.frameworx.engagedparty.party.api.bean;
 public class OptionalIndividualName extends IndividualName {
 
 	private Individual _individual;
@@ -8,6 +8,7 @@ public class OptionalIndividualName extends IndividualName {
 	}
 
 	public void set_individual(Individual _individual) {
+
 		this._individual = _individual;
 	}
 

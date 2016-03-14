@@ -1,4 +1,4 @@
-package com.digiwes.frameworx.engagedparty.party.bean;
+package com.digiwes.frameworx.engagedparty.party.api.bean;
 import com.digiwes.frameworx.common.basetype.TimePeriod;
 import java.util.*;
 

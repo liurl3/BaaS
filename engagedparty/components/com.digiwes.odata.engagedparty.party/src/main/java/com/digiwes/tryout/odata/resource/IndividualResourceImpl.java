@@ -1,11 +1,10 @@
 package com.digiwes.tryout.odata.resource;
 
-import com.digiwes.frameworx.engagedparty.party.bean.Individual;
-import com.digiwes.frameworx.engagedparty.party.bean.OptionalIndividualName;
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import com.digiwes.frameworx.engagedparty.party.api.bean.Individual;
+import com.digiwes.frameworx.engagedparty.party.api.bean.OptionalIndividualName;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualQueryService;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualUpdateService;
 import com.digiwes.tryout.odata.interfaces.IIndividualFactory;
-import com.digiwes.tryout.odata.providers.IndividualServiceComponent;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -24,9 +23,9 @@ import java.util.Set;
 ///**
 // * @scr.component name="digiwes.servlet.individualresource" immediate="true"
 // *
-// * @scr.reference name="individual.query" interface="com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService"
+// * @scr.reference name="individual.query" interface="com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualQueryService"
 // * cardinality="1..1" policy="dynamic"  bind="bindindvQryServiceInstance" unbind="unbindindvQryServiceInstance"
-// * @scr.reference name="individual.update" interface="com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService"
+// * @scr.reference name="individual.update" interface="com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualUpdateService"
 // * cardinality="1..1" policy="dynamic"  bind="bindindvUpdServiceInstance" unbind="unbindindvUpdServiceInstance"
 // * @scr.reference name="individual.factory" interface="com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualFactory"
 // * cardinality="1..1" policy="dynamic"  bind="setIndividualFactory" unbind="unsetIndividualFactory"

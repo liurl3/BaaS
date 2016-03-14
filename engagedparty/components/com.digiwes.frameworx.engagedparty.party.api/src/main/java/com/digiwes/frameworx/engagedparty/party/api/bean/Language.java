@@ -1,4 +1,4 @@
-package com.digiwes.frameworx.engagedparty.party.bean;
+package com.digiwes.frameworx.engagedparty.party.api.bean;
   
 /**
  * Represents a spoken and/or written language.

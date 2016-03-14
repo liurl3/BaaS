@@ -1,6 +1,6 @@
 package com.digiwes.tryout.odata.resource;
 
-import com.digiwes.frameworx.engagedparty.party.bean.Individual;
+import com.digiwes.frameworx.engagedparty.party.api.bean.Individual;
 import org.apache.olingo.commons.api.data.Entity;
 
 import java.util.List;
