@@ -89,7 +89,7 @@
 				<extensions>true</extensions>-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>com.digiwes.tryout.odata.App</Bundle-Activator>
+						<Bundle-Activator>com.digiwes.tryout.odata.Bundle</Bundle-Activator>
 						<Import-Package>
 							javax.servlet; version="[2.6.0, 3.0.0)",
 							javax.servlet.http; version="[2.6.0, 3.0.0)",

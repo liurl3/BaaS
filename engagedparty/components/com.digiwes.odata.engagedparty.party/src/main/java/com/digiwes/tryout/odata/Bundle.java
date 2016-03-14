@@ -3,7 +3,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.http.HttpService;
 
-public class App implements BundleActivator {
+public class Bundle implements BundleActivator {
     public void start(BundleContext context) {
         System.out.println("Starting Bundle.");
     }

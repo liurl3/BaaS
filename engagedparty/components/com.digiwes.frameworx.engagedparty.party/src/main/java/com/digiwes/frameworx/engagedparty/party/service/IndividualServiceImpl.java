@@ -1,9 +1,10 @@
 package com.digiwes.frameworx.engagedparty.party.service;
 
 import com.digiwes.frameworx.common.basetype.TimePeriod;
-import com.digiwes.frameworx.engagedparty.party.bean.*;
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
+import com.digiwes.frameworx.engagedparty.party.api.bean.*;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualQueryService;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualUpdateService;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -224,7 +225,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
         } ;
 
         Individual individual = null;
-        TimePeriod validFor = new TimePeriod(DateUtils.parseDate("2016-03-01","yyyy-MM-dd"),DateUtils.parseDate("2016-05-01","yyyy-MM-dd"));
+        TimePeriod validFor = new TimePeriod(DateUtils.parseDate("2016-03-01", "yyyy-MM-dd"),DateUtils.parseDate("2016-05-01","yyyy-MM-dd"));
         for (int i =0  ; i<defaultIndividualNameStrs.length ; i++){
             DefaultIndividualName defaultIndividualName = new DefaultIndividualName(defaultIndividualNameStrs[i][0],defaultIndividualNameStrs[i][1]);
             OptionalIndividualName optionalIndividualName = new OptionalIndividualName(optionalIndividualNameStrs[i][0],optionalIndividualNameStrs[i][1]);

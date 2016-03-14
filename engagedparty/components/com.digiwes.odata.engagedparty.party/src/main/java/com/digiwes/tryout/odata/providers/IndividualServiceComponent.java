@@ -1,16 +1,11 @@
 package com.digiwes.tryout.odata.providers;
 
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualQueryService;
-import com.digiwes.frameworx.engagedparty.party.interfaces.IndividualUpdateService;
-import com.digiwes.tryout.odata.IDataProvider;
-import com.digiwes.tryout.odata.PartyServlet;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualQueryService;
+import com.digiwes.frameworx.engagedparty.party.api.interfaces.IndividualUpdateService;
 import com.digiwes.tryout.odata.resource.IndividualResource;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.http.HttpService;
-
-import java.util.Map;
 
 /**
  * Created by nisx on 16-3-10.
