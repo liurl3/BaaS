@@ -1,7 +1,5 @@
 package com.digiwes.frameworx.engagedparty.party.api.bean;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * Represents the ability of a Party to understand or converse in a Language
  */
@@ -9,7 +7,6 @@ public class LanguageAbility {
 
 	private String languageAbilityId;
 	private Individual _individual ;
-	@NotNull
 	private Language _language;
 	/**
 	 * Degree of mastery in writing a language.
@@ -85,7 +82,10 @@ public class LanguageAbility {
 		this.listeningProficiency = listeningProficiency;
 	}
 
-	public LanguageAbility(@NotNull Language language, String listeningProficiency, String speakingProficiency, String readingProficiency, String writingProficiency) {
+	public LanguageAbility() {
+	}
+
+	public LanguageAbility(Language language, String listeningProficiency, String speakingProficiency, String readingProficiency, String writingProficiency) {
 
 		this._language = language ;
 		this.listeningProficiency = listeningProficiency ;

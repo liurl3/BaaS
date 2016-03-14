@@ -24,7 +24,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
     protected void activate(ComponentContext ctxt) {
         if (!isInit) {
             individualMap = new HashMap();
-            System.out.println("DataInit");
+            System.out.println("IndividualServiceImpl DataInit -------------------------------");
             try {
                 //main(null);
                 initData();
@@ -33,6 +33,10 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
             }
             isInit = true;
         }
+    }
+
+    protected void deactivate(ComponentContext ctxt){
+        System.out.print("IndividualServiceImpl deactivate ###############################################");
     }
 
     @Override
