@@ -236,7 +236,7 @@ public class IndividualServiceImpl implements IndividualQueryService ,Individual
             this.addOptionalIndividualName(individual,optionalIndividualName);
             individualMap.put((individualId++)+"",individual);
         }
-        System.out.println(individualMap.size());
+        System.out.println("IndividualServiceImpl initDate ======================================= "+individualMap.size());
     }
 
    /* public static void main(String[] args) throws Exception{
