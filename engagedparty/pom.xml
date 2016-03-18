@@ -21,7 +21,52 @@
         <orbit.version.axiom>1.2.11.wso2v6</orbit.version.axiom>
         <orbit.version.wsdl4j>1.6.2.wso2v4</orbit.version.wsdl4j>
         <wso2carbon.version>4.2.0</wso2carbon.version>
+        <digiwes.version>0.1.0-SNAPSHOT</digiwes.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.digiwes.frameworx</groupId>
+                <artifactId>com.digiwes.frameworx.common.basetype</artifactId>
+                <version>${digiwes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.digiwes.frameworx</groupId>
+                <artifactId>com.digiwes.frameworx.common.api</artifactId>
+                <version>${digiwes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.digiwes.frameworx</groupId>
+                <artifactId>com.digiwes.frameworx.engagedparty.party</artifactId>
+                <version>${digiwes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.digiwes.frameworx</groupId>
+                <artifactId>com.digiwes.frameworx.engagedparty.party.api</artifactId>
+                <version>${digiwes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.digiwes.frameworx</groupId>
+                <artifactId>com.digiwes.frameworx.engagedparty.party.bean</artifactId>
+                <version>${digiwes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.digiwes.frameworx</groupId>
+                <artifactId>com.digiwes.frameworx.engagedparty.resource.api</artifactId>
+                <version>${digiwes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.digiwes.frameworx</groupId>
+                <artifactId>com.digiwes.frameworx.engagedparty.ext.busi.impl</artifactId>
+                <version>${digiwes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.digiwes.orbit.org.apache.olingo</groupId>
+                <artifactId>odata-server</artifactId>
+                <version>4.1.0.wes1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <repositories>
         <repository>
             <id>digiwes-releases</id>

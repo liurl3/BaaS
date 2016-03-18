@@ -1,8 +1,8 @@
 package com.digiwes.frameworx.engagedparty.party.api.interfaces;
 
-import com.digiwes.frameworx.engagedparty.party.api.bean.Individual;
-import com.digiwes.frameworx.engagedparty.party.api.bean.IndividualName;
-import com.digiwes.frameworx.engagedparty.party.api.bean.LanguageAbility;
+import com.digiwes.frameworx.engagedparty.party.bean.Individual;
+import com.digiwes.frameworx.engagedparty.party.bean.IndividualName;
+import com.digiwes.frameworx.engagedparty.party.bean.LanguageAbility;
 
 import java.util.Date;
 import java.util.List;

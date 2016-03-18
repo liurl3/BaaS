@@ -21,10 +21,12 @@ package com.digiwes.tryout.odata;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.digiwes.frameworx.engagedparty.resource.api.IResource;
 import org.apache.olingo.commons.api.data.ContextURL;
 import org.apache.olingo.commons.api.data.ContextURL.Suffix;
 import org.apache.olingo.commons.api.data.Entity;
@@ -54,11 +56,7 @@ import org.apache.olingo.server.api.serializer.EntitySerializerOptions;
 import org.apache.olingo.server.api.serializer.ODataSerializer;
 import org.apache.olingo.server.api.serializer.PrimitiveSerializerOptions;
 import org.apache.olingo.server.api.serializer.SerializerException;
-import org.apache.olingo.server.api.uri.UriInfo;
-import org.apache.olingo.server.api.uri.UriInfoResource;
-import org.apache.olingo.server.api.uri.UriResource;
-import org.apache.olingo.server.api.uri.UriResourceEntitySet;
-import org.apache.olingo.server.api.uri.UriResourceProperty;
+import org.apache.olingo.server.api.uri.*;
 import org.apache.olingo.server.api.uri.queryoption.ExpandOption;
 import org.apache.olingo.server.api.uri.queryoption.SelectOption;
 
@@ -72,14 +70,12 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
 
   private OData odata;
   //private final DataProvider dataProvider;
-    private Map<String, IDataProvider> dataProviderMap;
   private ServiceMetadata edm;
 
   // This constructor is application specific and not mandatory for the Olingo library. We use it here to simulate the
   // database access
-  public PartyProcessor(final Map<String, IDataProvider> dataProviderMap) {
-    //this.dataProvider = dataProvider;
-      this.dataProviderMap = dataProviderMap;
+  public PartyProcessor() {
+
   }
 
 //  @Override
@@ -96,10 +92,15 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
 
     // Second we fetch the data for this specific entity set from the mock database and transform it into an EntitySet
     // object which is understood by our serialization
-    EntityCollection entitySet;
+      EntityCollection entitySet;
       try {
-          entitySet = dataProviderMap.get(edmEntitySet.getName()).readAll(edmEntitySet);
-      } catch (DataProviderException e) {
+          entitySet = new EntityCollection();
+
+          List<Entity> retList = ServiceFactory.getResource(edmEntitySet.getName()).retrieve();
+          if (null != retList) {
+              entitySet.getEntities().addAll(retList);
+          }
+      } catch (Exception e) {
           throw new ODataApplicationException(e.getMessage(), 500, Locale.ENGLISH);
       }
     // Next we create a serializer based on the requested format. This could also be a custom format but we do not
@@ -146,13 +147,20 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
       ODataSerializer serializer = odata.createSerializer(requestedContentType);
       final ExpandOption expand = uriInfo.getExpandOption();
       final SelectOption select = uriInfo.getSelectOption();
-      InputStream serializedContent = serializer.entity(edm, edmEntitySet.getEntityType(), entity,
-          EntitySerializerOptions.with()
-              .contextURL(isODataMetadataNone(requestedContentType) ? null :
-                  getContextUrl(edmEntitySet, true, expand, select, null))
-              .expand(expand).select(select)
-              .build()).getContent();
-      response.setContent(serializedContent);
+        try {
+            InputStream serializedContent = serializer.entity(edm, edmEntitySet.getEntityType(), entity,
+                    EntitySerializerOptions.with()
+                            .contextURL(isODataMetadataNone(requestedContentType) ? null :
+                                    getContextUrl(edmEntitySet, true, expand, select, null))
+                            .expand(expand).select(select)
+                            .build()).getContent();
+
+            response.setContent(serializedContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
       response.setStatusCode(HttpStatusCode.OK.getStatusCode());
       response.setHeader(HttpHeader.CONTENT_TYPE, requestedContentType.toContentTypeString());
     }
@@ -165,11 +173,14 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
 
       final EdmEntitySet edmEntitySet = getEdmEntitySet(uriInfo.asUriInfoResource());
       EdmEntityType edmEntityType = edmEntitySet.getEntityType();
-      IDataProvider provider = dataProviderMap.get(edmEntitySet.getName());
-      if (null == provider) {
+      IResource<Entity> resource = null;
+      try {
+          resource = ServiceFactory.getResource(edmEntitySet.getName());
+      } catch (DataProviderException e) {
           throw new ODataApplicationException("Entity create is not supported yet.",
                   HttpStatusCode.NOT_IMPLEMENTED.getStatusCode(), Locale.ENGLISH);
       }
+
       InputStream requestInputStream = request.getBody();
       ODataDeserializer deserializer = this.odata.createDeserializer(requestFormat);
       DeserializerResult result = deserializer.entity(requestInputStream, edmEntityType);
@@ -177,8 +188,9 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
 
       Entity entity;
       try {
-          entity = provider.create(edmEntitySet, requestEntity);
-      } catch (DataProviderException e) {
+          entity = resource.create(requestEntity);
+          entity = removeNull(entity);
+      } catch (Exception e) {
           throw new ODataApplicationException(e.getMessage(), 500, Locale.ENGLISH);
       }
       // If an entity was found we proceed by serializing it and sending it to the client.
@@ -305,9 +317,26 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
 
   private Entity readEntityInternal(final UriInfoResource uriInfo, final EdmEntitySet entitySet)
       throws DataProviderException {
-    // This method will extract the key values and pass them to the data provider
-    final UriResourceEntitySet resourceEntitySet = (UriResourceEntitySet) uriInfo.getUriResourceParts().get(0);
-    return dataProviderMap.get(entitySet.getName()).read(entitySet, resourceEntitySet.getKeyPredicates());
+      // This method will extract the key values and pass them to the data provider
+      final UriResourceEntitySet resourceEntitySet = (UriResourceEntitySet) uriInfo.getUriResourceParts().get(0);
+      List<UriParameter> keys = resourceEntitySet.getKeyPredicates();
+      if (null == keys || keys.isEmpty()) {
+          return null;
+      }
+      Map<String,String> keyParam = new HashMap<>();
+      for (UriParameter keyItem : keys) {
+          String keyName = keyItem.getName();
+          String keyValue = keyItem.getText();
+          if (null != keyValue && keyValue.length() > 2) {
+              keyValue = keyValue.substring(keyValue.indexOf("'")+1, keyValue.lastIndexOf("'"));
+              keyParam.put(keyName,keyValue);
+          }
+      }
+      try {
+          return removeNull(ServiceFactory.getResource(entitySet.getName()).retrieveByKey(keyParam));
+      } catch (Exception e) {
+          throw new DataProviderException("read data by id error");
+      }
   }
 
   private EdmEntitySet getEdmEntitySet(final UriInfoResource uriInfo) throws ODataApplicationException {
@@ -399,4 +428,21 @@ public class PartyProcessor implements EntityCollectionProcessor, EntityProcesso
     return contentType.isCompatible(ContentType.APPLICATION_JSON) 
        && ContentType.VALUE_ODATA_METADATA_NONE.equals(contentType.getParameter(ContentType.PARAMETER_ODATA_METADATA));
   }
+    private Entity removeNull(Entity entity) {
+        if (null != entity) {
+            List<Property> properties = entity.getProperties();
+            try {
+                int i = properties.size() - 1;
+                for (; i >= 0; i--) {
+                    Property property = properties.get(i);
+                    if (null == property) {
+                        properties.remove(i);
+                    }
+                }
+            } catch (NullPointerException ne) {
+                ne.printStackTrace();
+            }
+        }
+        return entity;
+    }
 }

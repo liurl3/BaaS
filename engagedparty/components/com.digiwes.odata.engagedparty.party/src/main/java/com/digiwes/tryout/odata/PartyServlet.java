@@ -18,23 +18,18 @@
  */
 package com.digiwes.tryout.odata;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.olingo.server.api.OData;
+import org.apache.olingo.server.api.ODataHttpHandler;
+import org.apache.olingo.server.api.ServiceMetadata;
+import org.apache.olingo.server.api.edmx.EdmxReference;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.digiwes.tryout.odata.providers.IndividualDataProvider;
-import com.digiwes.tryout.odata.providers.PartyDataProvider;
-import org.apache.olingo.server.api.OData;
-import org.apache.olingo.server.api.ODataHttpHandler;
-import org.apache.olingo.server.api.ServiceMetadata;
-import org.apache.olingo.server.api.edmx.EdmxReference;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class PartyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -52,20 +47,13 @@ public class PartyServlet extends HttpServlet {
 //				session.setAttribute(DataProvider.class.getName(), dataProvider);
 //				System.out.println("Created new data provider.");
 //			}
-			Map<String, IDataProvider> dataProviderMap = (Map) session.getAttribute("DataProviderMap");
-			if (null == dataProviderMap) {
-				dataProviderMap = new HashMap<String, IDataProvider>();
-				dataProviderMap.put(PartyEdmProvider.ES_PARTY_NAME, new PartyDataProvider());
-				dataProviderMap.put(PartyEdmProvider.ES_INDIVIDUAL_NAME, new IndividualDataProvider());
-				session.setAttribute("DataProviderMap", dataProviderMap);
-			}
 
 
 			OData odata = OData.newInstance();
 			ServiceMetadata edm = odata.createServiceMetadata(
 					new PartyEdmProvider(), new ArrayList<EdmxReference>());
 			ODataHttpHandler handler = odata.createHandler(edm);
-			handler.register(new PartyProcessor(dataProviderMap));
+			handler.register(new PartyProcessor());
 			handler.process(req, resp);
 		} catch (RuntimeException e) {
 			System.out.println("Server Error" + e.getMessage());

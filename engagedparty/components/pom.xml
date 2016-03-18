@@ -11,9 +11,15 @@
     <artifactId>com.digiwes.frameworx.engagedparty-components</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <modules>
-        <module>com.digiwes.frameworx.engagedparty.party</module>
+        <module>com.digiwes.frameworx.engagedparty.party.bean</module>
         <module>com.digiwes.frameworx.engagedparty.party.api</module>
+        <module>com.digiwes.frameworx.engagedparty.party</module>
+        <module>com.digiwes.frameworx.common.api</module>
+
+        <module>com.digiwes.frameworx.engagedparty.resource.api</module>
+        <module>com.digiwes.frameworx.engagedparty.resource.impl</module>
         <module>olingo-server-4.1.0-wes1</module>
+        <module>com.digiwes.frameworx.odata.common.impl</module>
         <module>com.digiwes.odata.engagedparty.party</module>
     </modules>
 

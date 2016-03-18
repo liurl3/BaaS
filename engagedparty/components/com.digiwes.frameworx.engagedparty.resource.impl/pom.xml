@@ -8,9 +8,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>com.digiwes.frameworx.engagedparty.party.api</artifactId>
+    <artifactId>com.digiwes.frameworx.engagedparty.resource.impl</artifactId>
     <packaging>bundle</packaging>
-    <name>com.digiwes.frameworx.engagedparty.party.api</name>
+    <name>com.digiwes.frameworx.engagedparty.resource.impl</name>
     <url>http://digiwes.com</url>
     <dependencies>
         <dependency>
@@ -27,7 +27,27 @@
         </dependency>
         <dependency>
             <groupId>com.digiwes.frameworx</groupId>
+            <artifactId>com.digiwes.frameworx.common.basetype</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.digiwes.frameworx</groupId>
+            <artifactId>com.digiwes.frameworx.common.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.digiwes.frameworx</groupId>
+            <artifactId>com.digiwes.frameworx.engagedparty.party.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.digiwes.frameworx</groupId>
             <artifactId>com.digiwes.frameworx.engagedparty.party.bean</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.digiwes.frameworx</groupId>
+            <artifactId>com.digiwes.frameworx.engagedparty.resource.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.digiwes.orbit.org.apache.olingo</groupId>
+            <artifactId>odata-server</artifactId>
         </dependency>
     </dependencies>
 
@@ -53,12 +73,15 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Export-Package>
-                            com.digiwes.frameworx.engagedparty.party.api.interfaces,
-                        </Export-Package>
+                        <Export-Package>com.digiwes.frameworx.engagedparty.resource.impl</Export-Package>
                         <Private-Package></Private-Package>
                         <Import-Package>
-                            com.digiwes.frameworx.common.basetype,com.digiwes.frameworx.engagedparty.party.bean
+                            com.digiwes.frameworx.engagedparty.resource.api,
+                            com.digiwes.frameworx.engagedparty.party.bean,
+                            com.digiwes.frameworx.engagedparty.party.api.interfaces,
+                            com.digiwes.frameworx.engagedparty.party.service,
+                            com.digiwes.frameworx.common.basetype,
+                            com.digiwes.frameworx.common.api
                         </Import-Package>
                         <DynamicImport-Package></DynamicImport-Package>
                     </instructions>

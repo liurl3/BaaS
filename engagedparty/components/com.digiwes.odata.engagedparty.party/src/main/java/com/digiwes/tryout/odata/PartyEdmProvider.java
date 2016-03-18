@@ -88,26 +88,32 @@ public class PartyEdmProvider extends CsdlAbstractEdmProvider {
           .setBaseType(ET_PARTY)
           .setName(ET_INDIVIDUAL.getName())
           .setKey(Arrays.asList(new
-           CsdlPropertyRef().setName("partyID")))
+                  CsdlPropertyRef().setName("partyId")))
           .setProperties(
-              Arrays.asList(
-                   new
-                   CsdlProperty().setName("partyID").setType(
-                   EdmPrimitiveTypeKind.String
-                   .getFullQualifiedName()),
-                  new CsdlProperty().setName("Nationality").setType(
-                      EdmPrimitiveTypeKind.String.getFullQualifiedName()),
-                  new CsdlProperty()
-                      .setName("formattedName")
-                      .setType(
-                              EdmPrimitiveTypeKind.String.getFullQualifiedName())
-                     .setNullable(false)))
+                  Arrays.asList(
+//                   new
+//                   CsdlProperty().setName("partyId").setType(
+//                           EdmPrimitiveTypeKind.String
+//                                   .getFullQualifiedName()).setNullable(true),
+                          new CsdlProperty().setName("nationality").setType(
+                                  EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true),
+                          new CsdlProperty()
+                                  .setName("gender")
+                                  .setType(
+                                          EdmPrimitiveTypeKind.String.getFullQualifiedName())
+                                  .setNullable(true),
+                          new CsdlProperty().setName("_defaultIndividualName").setType(ET_INDIVIDUALNAME)
+                                  .setNullable(true),
+                          new CsdlProperty().setName("_optionalIndividualName")
+                                  .setType(ET_INDIVIDUALNAME).setCollection(true)
+                  )
+          )
           .setNavigationProperties(
-              Arrays.asList(
-                  new CsdlNavigationProperty().setName("DefaultName")
-                    .setType(ET_INDIVIDUALNAME).setPartner("Person").setNullable(false), //TODO
-                  new CsdlNavigationProperty().setName("OptName")
-                    .setType(ET_INDIVIDUALNAME).setPartner("Person").setCollection(true)
+                  Arrays.asList(
+                          new CsdlNavigationProperty().setName("_defaultIndividualName")
+                                  .setType(ET_INDIVIDUALNAME).setNullable(true), //TODO
+                          new CsdlNavigationProperty().setName("_optionalIndividualName")
+                                  .setType(ET_INDIVIDUALNAME).setCollection(true)
                   ));
 
     } else if (ET_INDIVIDUALNAME.equals(entityTypeName)) {
@@ -116,35 +122,35 @@ public class PartyEdmProvider extends CsdlAbstractEdmProvider {
           .setKey(Arrays.asList(new CsdlPropertyRef().setName("formattedName")))
           .setProperties(
               Arrays.asList(
-                  new CsdlProperty()
-                      .setName("formattedName")
-                      .setType(
-                          EdmPrimitiveTypeKind.String.getFullQualifiedName())
-                      .setNullable(false),
-                  new CsdlProperty().setName("ruleCounty").setType(
-                      EdmPrimitiveTypeKind.String.getFullQualifiedName()),
-                  new CsdlProperty().setName("familyName").setType(
-                      EdmPrimitiveTypeKind.String.getFullQualifiedName()),
-                  new CsdlProperty().setName("givenName").setType(
-                      EdmPrimitiveTypeKind.String.getFullQualifiedName()),
-                  new CsdlProperty().setName("middleName").setType(
-                      EdmPrimitiveTypeKind.String.getFullQualifiedName())))
-          .setNavigationProperties(
-              Arrays.asList(new CsdlNavigationProperty().setName("Person")
-                  .setType(ET_INDIVIDUAL).setPartner("OptName")));
+                      new CsdlProperty()
+                              .setName("formattedName")
+                              .setType(
+                                      EdmPrimitiveTypeKind.String.getFullQualifiedName())
+                              .setNullable(true),
+                      new CsdlProperty().setName("formOfAddress").setType(
+                              EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true),
+                      new CsdlProperty().setName("familyNames").setType(
+                              EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true),
+                      new CsdlProperty().setName("givenNames").setType(
+                              EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true),
+                      new CsdlProperty().setName("middleNames").setType(
+                              EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true)));
+//          .setNavigationProperties(
+//              Arrays.asList(new CsdlNavigationProperty().setName("Person")
+//                  .setType(ET_INDIVIDUAL).setPartner("OptName")));
     } else if (ET_PARTY.equals(entityTypeName)) {
       return new CsdlEntityType()
           .setName(ET_PARTY.getName())
-          .setKey(Arrays.asList(new CsdlPropertyRef().setName("partyID")))
+          .setKey(Arrays.asList(new CsdlPropertyRef().setName("partyId")))
           .setProperties(
               Arrays.asList(
                   new CsdlProperty()
-                      .setName("partyID")
+                      .setName("partyId")
                       .setType(
                           EdmPrimitiveTypeKind.String.getFullQualifiedName())
                       .setNullable(false),
                   new CsdlProperty().setName("validFor").setType(CT_TIMEPERIOD)
-                      .setNullable(false)));
+                      .setNullable(true)));
     }
 
     return null;
@@ -188,12 +194,30 @@ public class PartyEdmProvider extends CsdlAbstractEdmProvider {
       return new CsdlComplexType().setName(CT_TIMEPERIOD.getName())
           .setProperties(
               Arrays.asList(
-                  new CsdlProperty().setName("startTime").setType(
-                      EdmPrimitiveTypeKind.DateTimeOffset
+                  new CsdlProperty().setName("startDateTime").setType(
+                          EdmPrimitiveTypeKind.Date
                           .getFullQualifiedName()),
-                  new CsdlProperty().setName("endTime").setType(
-                      EdmPrimitiveTypeKind.DateTimeOffset
+                  new CsdlProperty().setName("endDateTime").setType(
+                      EdmPrimitiveTypeKind.Date
                           .getFullQualifiedName())));
+    } else if (ET_INDIVIDUALNAME.equals(complexTypeName)) {
+        return new CsdlComplexType().setName(CT_TIMEPERIOD.getName())
+                .setProperties(
+                        Arrays.asList(
+                                new CsdlProperty()
+                                        .setName("formattedName")
+                                        .setType(
+                                                EdmPrimitiveTypeKind.String.getFullQualifiedName())
+                                        .setNullable(true),
+                                new CsdlProperty().setName("formOfAddress").setType(
+                                        EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true),
+                                new CsdlProperty().setName("familyNames").setType(
+                                        EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true),
+                                new CsdlProperty().setName("givenNames").setType(
+                                        EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true),
+                                new CsdlProperty().setName("middleNames").setType(
+                                        EdmPrimitiveTypeKind.String.getFullQualifiedName()).setNullable(true)));
+
     }
     return null;
   }
